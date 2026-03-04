@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.2] - 2026-03-04
+### Added
+- GitHub Actions deploy workflow to build and publish `dist/` on push to main.
+
 ## [1.4.1] - 2026-03-04
 ### Added
 - Deploy script for publishing `dist/` to GitHub Pages (gh-pages branch).
