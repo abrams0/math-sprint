@@ -25,19 +25,23 @@ function testSubtraction() {
 }
 
 function testMultiplication() {
-  const problems = buildProblems(500, 100, ["mul"]);
+  const max = 20;
+  const problems = buildProblems(500, max, ["mul"]);
   problems.forEach(({ a, b }) => {
     assert(a >= 1 && a <= 10, "mul: a in 1..10");
     assert(b >= 1 && b <= 10, "mul: b in 1..10");
+    assert(a * b <= max, "mul: result <= max");
   });
 }
 
 function testDivision() {
-  const problems = buildProblems(500, 100, ["div"]);
+  const max = 20;
+  const problems = buildProblems(500, max, ["div"]);
   problems.forEach(({ a, b }) => {
     assert(a >= 1 && a <= 10, "div: a in 1..10");
     assert(b >= 1 && b <= 10, "div: b in 1..10");
     assert(a % b === 0, "div: integer result");
+    assert(a / b <= max, "div: result <= max");
   });
 }
 

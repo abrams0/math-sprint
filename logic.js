@@ -18,6 +18,16 @@
     },
   };
 
+  const MULTIPLICATION_PAIRS = (() => {
+    const pairs = [];
+    for (let a = 1; a <= 10; a += 1) {
+      for (let b = 1; b <= 10; b += 1) {
+        pairs.push([a, b]);
+      }
+    }
+    return pairs;
+  })();
+
   const DIVISION_PAIRS = (() => {
     const pairs = [];
     for (let dividend = 1; dividend <= 10; dividend += 1) {
@@ -34,8 +44,17 @@
     return Math.floor(Math.random() * (max - min + 1)) + min;
   }
 
-  function pickDivisionPair() {
-    const [dividend, divisor] = DIVISION_PAIRS[randomInt(0, DIVISION_PAIRS.length - 1)];
+  function pickMultiplicationPair(max) {
+    const pool = MULTIPLICATION_PAIRS.filter(([a, b]) => a * b <= max);
+    const pairs = pool.length ? pool : MULTIPLICATION_PAIRS;
+    const [a, b] = pairs[randomInt(0, pairs.length - 1)];
+    return { a, b };
+  }
+
+  function pickDivisionPair(max) {
+    const pool = DIVISION_PAIRS.filter(([a, b]) => a / b <= max);
+    const pairs = pool.length ? pool : DIVISION_PAIRS;
+    const [dividend, divisor] = pairs[randomInt(0, pairs.length - 1)];
     return { a: dividend, b: divisor };
   }
 
@@ -53,10 +72,11 @@
         a = randomInt(1, max);
         b = randomInt(1, a);
       } else if (op === "mul") {
-        a = randomInt(1, 10);
-        b = randomInt(1, 10);
+        const pair = pickMultiplicationPair(max);
+        a = pair.a;
+        b = pair.b;
       } else if (op === "div") {
-        const pair = pickDivisionPair();
+        const pair = pickDivisionPair(max);
         a = pair.a;
         b = pair.b;
       }

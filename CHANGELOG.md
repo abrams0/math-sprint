@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.2.4] - 2026-03-04
+### Fixed
+- Cleaned up logic modules and tests after prior merge artifacts.
+
+## [1.2.3] - 2026-03-04
+### Fixed
+- Fixed invalid logic module syntax that broke tests.
+
+## [1.2.2] - 2026-03-04
+### Fixed
+- Multiplication/division now respect the max number (result <= max).
+
 ## [1.2.1] - 2026-03-03
 ### Fixed
 - Restored button functionality when opening `index.html` directly (no module/CORS issues).
