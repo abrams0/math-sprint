@@ -46,5 +46,6 @@ Run commands from the app folder (where `package.json` lives).
 
 ## Deployment
 - Build: `npm run build` (outputs to `dist/`)
-- Deploy to GitHub Pages: `scripts/deploy-pages.sh`
+- GitHub Pages auto-deploys on every push to `main`.
+- Manual deploy (optional): `scripts/deploy-pages.sh`
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.3] - 2026-03-04
+### Changed
+- README updated to reflect automatic deployments.
+
 ## [1.4.2] - 2026-03-04
 ### Added
 - GitHub Actions deploy workflow to build and publish `dist/` on push to main.
