@@ -4,15 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Math Sprint</title>
-    <link rel="icon" href="favicon.svg?v=1.7.3" type="image/svg+xml" />
-    <link rel="icon" href="favicon.ico?v=1.7.3" sizes="any" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.7.3" />
+    <link rel="icon" href="favicon.svg?v=1.7.6" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico?v=1.7.6" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.7.6" />
     <meta name="description" content="Fast practice for math operations." />
     <meta property="og:title" content="Math Sprint" />
     <meta property="og:description" content="Fast practice for math operations." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="styles.css?v=1.7.3" />  </head>
+    <link rel="stylesheet" href="styles.css?v=1.7.6" />  </head>
   <body>
     <div class="app">
       <header class="brand">
@@ -54,7 +54,9 @@
                   <div class="daily-value" id="dailyStatusValue">Not yet</div>
                 </div>
               </div>
-            </div>            <div class="control">
+            </div>
+
+            <div class="control">
               <label data-i18n="maxNumberLabel">Max number</label>
               <div class="button-row" id="maxNumberButtons">
                 <button class="chip" data-max="10">10</button>
@@ -64,13 +66,22 @@
                 <button class="chip" data-max="100">100</button>
               </div>
             </div>
-<div class="control">
+
+            <div class="control">
               <label><span data-i18n="operationsLabel">Operations (pick one or more)</span></label>
               <div class="button-row" id="operationButtons">
                 <button class="toggle active" data-op="add"><span data-i18n="addition">Addition</span></button>
                 <button class="toggle" data-op="sub"><span data-i18n="subtraction">Subtraction</span></button>
                 <button class="toggle" data-op="mul"><span data-i18n="multiplicationSoon">Multiplication</span></button>
                 <button class="toggle" data-op="div"><span data-i18n="divisionSoon">Division</span></button>
+              </div>
+            </div>
+
+            <div class="control">
+              <label><span data-i18n="adaptiveLabel">Adaptive difficulty</span></label>
+              <div class="toggle-row">
+                <input id="adaptiveToggle" type="checkbox" />
+                <span data-i18n="adaptiveHint">Adjusts max based on speed and accuracy.</span>
               </div>
             </div>
 
@@ -83,7 +94,9 @@
                 <button class="chip" data-count="50">50</button>
               </div>
             </div>
-<button id="startBtn" class="primary"><span data-i18n="startSession">Start Session</span></button>
+
+            <button id="heatmapBtn" class="ghost" data-i18n="heatmapButton">Fluency heatmap</button>
+            <button id="startBtn" class="primary"><span data-i18n="startSession">Start Session</span></button>
           </div>
         </section>
 
@@ -197,7 +210,7 @@
       </footer>
     </div>
 
-    <script src="logic.js?v=1.7.3"></script>
-    <script src="app.js?v=1.7.3"></script>
+    <script src="logic.js?v=1.7.6"></script>
+    <script src="app.js?v=1.7.6"></script>
   </body>
 </html>
