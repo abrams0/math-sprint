@@ -48,7 +48,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.7.8";
+const APP_VERSION = "1.7.9";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";
@@ -316,7 +316,13 @@ let roundMessageShown = false;
 let audioCtx = null;
 let audioAvailable = true;
 let isMuted = localStorage.getItem("mathSprintMuted") === "true";
-let adaptiveEnabled = localStorage.getItem(ADAPTIVE_KEY) === "true";
+let adaptiveEnabled = localStorage.getItem(ADAPTIVE_KEY);
+if (adaptiveEnabled === null) {
+  adaptiveEnabled = true;
+  localStorage.setItem(ADAPTIVE_KEY, "true");
+} else {
+  adaptiveEnabled = adaptiveEnabled === "true";
+}
 
 const FEEDBACK_DELAY_CORRECT = 900;
 const FEEDBACK_DELAY_WRONG = 1200;
@@ -967,8 +973,8 @@ function applyAdaptiveDifficulty() {
   const steps = [10, 20, 30, 50, 100];
   const idx = steps.indexOf(maxNumber);
   let next = maxNumber;
-  if (accuracy >= 0.9 && avgTime < 2000 && idx < steps.length - 1) next = steps[idx + 1];
-  if ((accuracy <= 0.7 || avgTime > 4000) && idx > 0) next = steps[idx - 1];
+  if (accuracy >= 0.9 && avgTime < 4000 && idx < steps.length - 1) next = steps[idx + 1];
+  if ((accuracy <= 0.7 || avgTime > 6000) && idx > 0) next = steps[idx - 1];
   if (next !== maxNumber) {
     maxNumber = next;
     if (maxNumberButtons) {
