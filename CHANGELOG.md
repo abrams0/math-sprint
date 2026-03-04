@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.6] - 2026-03-04
+### Changed
+- Problem generator avoids repeating the same answer back-to-back.
+
 ## [1.7.3] - 2026-03-04
 ### Changed
 - Summary metrics reordered (fastest/slowest on one row, averages on next).

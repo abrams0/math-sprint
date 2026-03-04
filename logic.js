@@ -58,7 +58,11 @@
     return { a: dividend, b: divisor };
   }
 
-  function buildProblems(count, max, ops) {
+  function computeAnswer(op, a, b) {
+  return operations[op].solve(a, b);
+}
+
+function buildProblems(count, max, ops) {
     const problems = [];
     for (let i = 0; i < count; i += 1) {
       let a = 0;

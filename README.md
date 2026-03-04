@@ -6,6 +6,7 @@
 A lightweight, browser-based practice app for fast mental math.
 
 ## Features
+- Avoids repetitive answers back-to-back in a session.
 - Adaptive difficulty.
 - Spaced repetition for missed pairs.
 - Fluency heatmap of slowest pairs.

@@ -57,28 +57,42 @@ function pickDivisionPair(max) {
   return { a: dividend, b: divisor };
 }
 
+export function computeAnswer(op, a, b) {
+  return operations[op].solve(a, b);
+}
+
 export function buildProblems(count, max, ops) {
   const problems = [];
+  let lastAnswer = null;
   for (let i = 0; i < count; i += 1) {
     let a = 0;
     let b = 0;
-    const op = ops[randomInt(0, ops.length - 1)];
+    let op = ops[randomInt(0, ops.length - 1)];
+    let answer = null;
 
-    if (op === "add") {
-      a = randomInt(1, Math.max(1, max - 1));
-      b = randomInt(1, max - a);
-    } else if (op === "sub") {
-      a = randomInt(1, max);
-      b = randomInt(1, a);
-    } else if (op === "mul") {
-      const pair = pickMultiplicationPair(max);
-      a = pair.a;
-      b = pair.b;
-    } else if (op === "div") {
-      const pair = pickDivisionPair(max);
-      a = pair.a;
-      b = pair.b;
+    for (let attempt = 0; attempt < 6; attempt += 1) {
+      op = ops[randomInt(0, ops.length - 1)];
+      if (op === "add") {
+        a = randomInt(1, Math.max(1, max - 1));
+        b = randomInt(1, max - a);
+      } else if (op === "sub") {
+        a = randomInt(1, max);
+        b = randomInt(1, a);
+      } else if (op === "mul") {
+        const pair = pickMultiplicationPair(max);
+        a = pair.a;
+        b = pair.b;
+      } else if (op === "div") {
+        const pair = pickDivisionPair(max);
+        a = pair.a;
+        b = pair.b;
+      }
+
+      answer = computeAnswer(op, a, b);
+      if (answer !== lastAnswer) break;
     }
+
+    lastAnswer = answer;
 
     problems.push({
       a,
