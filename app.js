@@ -38,7 +38,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.3.8";
+const APP_VERSION = "1.4.0";
 const DAILY_GOAL = 20;
 
 const translations = {

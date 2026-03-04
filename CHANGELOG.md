@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.4.0] - 2026-03-04
+### Added
+- Build step that outputs static files to `dist/`.
+- Cache-busting in build output.
+
+### Changed
+- Service worker cache name now versioned via build.
+- README updated to reflect current features.
+
 ## [1.3.8] - 2026-03-04
 ### Fixed
 - Check button translation ensured for all languages.

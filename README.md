@@ -16,13 +16,12 @@ A lightweight, browser-based practice app for fast mental math.
 - Daily goal + streak indicator (counts across sessions each day and persists across reloads).
 - Difficulty presets.
 - Mistake review screen.
-- Tap-to-continue round break (optional).
 - Mute toggle with persistence.
 
 ## Usage
 1. Open `index.html` in a browser.
 2. Choose max number (buttons), operations, and problems per session.
-3. Answer using the keyboard and press Enter.
+3. Answer using the keyboard or the on-screen Check button.
 
 ## Versioning
 This project uses semantic versioning: `MAJOR.MINOR.PATCH`.
@@ -36,11 +35,16 @@ Run commands from the app folder (where `package.json` lives).
 ## Accessibility
 - Keyboard focus styles enabled for all controls.
 - ARIA labels and live regions for problem and feedback.
-- Progress bar shows symbols (✓/✕) in addition to color.
+- Progress bar uses accessible labels in addition to color.
 
 
 ## Performance & Reliability
 - Fonts use local system stacks (no network dependency).
 - Offline support via service worker.
 - Audio gracefully disables if AudioContext is unavailable.
+
+
+## Deployment
+- Build: `npm run build` (outputs to `dist/`)
+- Deploy: push `dist/` to your static host or serve directly.
 
