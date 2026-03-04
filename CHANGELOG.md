@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.7.3] - 2026-03-04
+### Changed
+- Summary metrics reordered (fastest/slowest on one row, averages on next).
+- New record badge spacing improved.
+- Answer input now blocks non-numeric keys on desktop.
+
 ## [1.7.2] - 2026-03-04
 ### Fixed
 - Summary now shows average time and best average metrics.
