@@ -3,7 +3,12 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title><span data-i18n="appTitle">Math Sprint</span></title>
+    <title>Math Sprint</title>
+    <meta name="description" content="Fast practice for math operations." />
+    <meta property="og:title" content="Math Sprint" />
+    <meta property="og:description" content="Fast practice for math operations." />
+    <meta property="og:type" content="website" />
+
     <link rel="stylesheet" href="styles.css" />  </head>
   <body>
     <div class="app">
@@ -99,11 +104,13 @@
                 id="answerInput"
                 type="text"
                 aria-label="Answer"
+                enterkeyhint="done"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 required
               />
             </form>
+            <button id="submitAnswerBtn" class="primary answer-submit" data-i18n="submitAnswer">Check</button>
             <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
             <div id="reaction" class="reaction" aria-hidden="true"></div>
             <div id="roundMessage" class="round-message hidden"></div>

@@ -14,6 +14,7 @@ const summary = document.getElementById("summary");
 const progressBar = document.getElementById("progressBar");
 const problemText = document.getElementById("problemText");
 const answerForm = document.getElementById("answerForm");
+const submitAnswerBtn = document.getElementById("submitAnswerBtn");
 const answerInput = document.getElementById("answerInput");
 const feedback = document.getElementById("feedback");
 const roundMessage = document.getElementById("roundMessage");
@@ -37,7 +38,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.3.0";
+const APP_VERSION = "1.3.3";
 const DAILY_GOAL = 20;
 
 const translations = {
@@ -348,6 +349,12 @@ answerForm.addEventListener("submit", (event) => {
   handleAnswer();
 });
 
+if (submitAnswerBtn) {
+  submitAnswerBtn.addEventListener("click", () => {
+    handleAnswer();
+  });
+}
+
 answerInput.addEventListener("input", () => {
   answerInput.value = answerInput.value.replace(/\\D+/g, "");
 });
@@ -604,6 +611,7 @@ let currentLang = localStorage.getItem("mathSprintLang") || "en";
 
 function applyTranslations(lang) {
   const dict = translations[lang] || translations.en;
+  document.title = dict.appTitle || "Math Sprint";
   document.querySelectorAll('[data-i18n]').forEach((el) => {
     const key = el.dataset.i18n;
     if (dict[key]) {

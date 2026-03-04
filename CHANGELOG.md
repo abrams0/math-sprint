@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.3] - 2026-03-04
+### Fixed
+- Clean browser tab title and added social meta tags.
+
+## [1.3.2] - 2026-03-04
+### Changed
+- Mobile header now stacks controls below the title on narrow screens.
+
+## [1.3.1] - 2026-03-04
+### Added
+- Large on-screen "Check" button and `enterkeyhint` for mobile keyboards.
+
 ## [1.3.0] - 2026-03-04
 ### Added
 - Offline support with a service worker and manifest.
