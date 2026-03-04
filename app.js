@@ -38,7 +38,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.4.3";
+const APP_VERSION = "1.4.4";
 const DAILY_GOAL = 20;
 
 const translations = {
@@ -517,7 +517,7 @@ function endSession() {
   if (solvedTimes.length > 0) {
     const fastest = Math.min(...solvedTimes);
     const slowest = Math.max(...solvedTimes);
-    summaryFastest.textContent = formatDuration(fastest);
+    summaryFastest.textContent = formatDurationWithTenths(fastest);
     summarySlowest.textContent = formatDuration(slowest);
   } else {
     summaryFastest.textContent = "--";
@@ -544,6 +544,14 @@ function formatDuration(ms) {
   const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, "0");
   const seconds = String(totalSeconds % 60).padStart(2, "0");
   return `${minutes}:${seconds}`;
+}
+
+function formatDurationWithTenths(ms) {
+  const totalTenths = Math.max(0, Math.floor(ms / 100));
+  const minutes = String(Math.floor(totalTenths / 600)).padStart(2, "0");
+  const seconds = String(Math.floor((totalTenths % 600) / 10)).padStart(2, "0");
+  const tenths = String(totalTenths % 10);
+  return `${minutes}:${seconds}.${tenths}`;
 }
 
 

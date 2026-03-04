@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.4] - 2026-03-04
+### Changed
+- Fastest solution now displays tenths of a second.
+
 ## [1.4.3] - 2026-03-04
 ### Changed
 - README updated to reflect automatic deployments.
