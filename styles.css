@@ -400,6 +400,28 @@ label {
 }
 
 @media (max-width: 640px) {
+  .brand {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header-controls {
+    align-self: stretch;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    flex-basis: 100%;
+    width: 100%;
+  }
+
+  .brand .header-controls {
+    order: 2;
+  }
+
+  .lang-selector {
+    flex-wrap: wrap;
+  }
+
   .panel {
     padding: 20px;
   }
@@ -603,4 +625,11 @@ label {
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
   border: 0;
+}
+
+.answer-submit {
+  margin: 18px auto 0;
+  width: min(360px, 90%);
+  font-size: 18px;
+  padding: 12px 18px;
 }

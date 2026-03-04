@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.3.8] - 2026-03-04
+### Fixed
+- Check button translation ensured for all languages.
+
+## [1.3.7] - 2026-03-04
+### Changed
+- Forced header controls onto a new row on narrow screens.
+
+## [1.3.6] - 2026-03-04
+### Changed
+- Adjusted Check button spacing and width to match the answer box.
+
 ## [1.3.5] - 2026-03-04
 ### Changed
 - Regenerated favicon and Apple touch icon to match the app logo.
