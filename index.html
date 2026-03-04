@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><span data-i18n="appTitle">Math Sprint</span></title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="app">
+      <header class="brand">
+        
+        <div class="logo">⚡</div>
+        <div>
+          <div class="title"><span data-i18n="appTitle">Math Sprint</span></div>
+          <div class="subtitle"><span data-i18n="appSubtitle">Fast practice for math operations</span></div>
+        </div>
+              <div class="header-controls">
+          <button id="muteToggle" class="mute-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+          <div class="lang-selector" id="langSelector">
+          <button class="lang-btn active" data-lang="en" aria-label="English">🇬🇧</button>
+          <button class="lang-btn" data-lang="lt" aria-label="Lithuanian">🇱🇹</button>
+          <button class="lang-btn" data-lang="de" aria-label="German">🇩🇪</button>
+          <button class="lang-btn" data-lang="ru" aria-label="Russian">🇷🇺</button>
+        </div>
+        </div>
+      </header>
+
+      <main class="panel">
+        <section id="menu" class="menu">
+          <div class="menu-card">
+            <h1><span data-i18n="menuTitle">Pick Your Practice</span></h1>
+            <p class="hint"><span data-i18n="menuHint">Set the size, skills, and session length, then start.</span></p>
+
+            <div class="control daily-goal">
+              <div class="daily-card">
+                <div>
+                  <div class="daily-label" data-i18n="dailyGoalLabel">Daily goal</div>
+                  <div class="daily-value" id="dailyGoalValue">20</div>
+                </div>
+                <div>
+                  <div class="daily-label" data-i18n="streakLabel">Streak</div>
+                  <div class="daily-value" id="streakValue">0</div>
+                </div>
+                <div>
+                  <div class="daily-label" data-i18n="dailyStatusLabel">Today</div>
+                  <div class="daily-value" id="dailyStatusValue">Not yet</div>
+                </div>
+              </div>
+            </div>            <div class="control">
+              <label data-i18n="maxNumberLabel">Max number</label>
+              <div class="button-row" id="maxNumberButtons">
+                <button class="chip" data-max="10">10</button>
+                <button class="chip active" data-max="20">20</button>
+                <button class="chip" data-max="30">30</button>
+                <button class="chip" data-max="50">50</button>
+                <button class="chip" data-max="100">100</button>
+              </div>
+            </div>
+<div class="control">
+              <label><span data-i18n="operationsLabel">Operations (pick one or more)</span></label>
+              <div class="button-row" id="operationButtons">
+                <button class="toggle active" data-op="add"><span data-i18n="addition">Addition</span></button>
+                <button class="toggle" data-op="sub"><span data-i18n="subtraction">Subtraction</span></button>
+                <button class="toggle" data-op="mul"><span data-i18n="multiplicationSoon">Multiplication</span></button>
+                <button class="toggle" data-op="div"><span data-i18n="divisionSoon">Division</span></button>
+              </div>
+            </div>
+
+            <div class="control">
+              <label><span data-i18n="problemsPerSession">Problems per session</span></label>
+              <div class="button-row" id="countButtons">
+                <button class="chip active" data-count="10">10</button>
+                <button class="chip" data-count="20">20</button>
+                <button class="chip" data-count="30">30</button>
+                <button class="chip" data-count="50">50</button>
+              </div>
+            </div>
+<button id="startBtn" class="primary"><span data-i18n="startSession">Start Session</span></button>
+          </div>
+        </section>
+
+        <section id="session" class="session hidden">
+          <div id="roundOverlay" class="round-overlay hidden" role="status" aria-live="polite">
+            <div class="round-overlay-card">
+              <h2 id="roundOverlayTitle" data-i18n="roundOverlayTitle">Great first round!</h2>
+              <p id="roundOverlayText" data-i18n="roundOverlayText">Now let’s revisit the tricky ones and get them right.</p>
+              <p id="roundOverlayHint" class="round-overlay-hint" data-i18n="roundOverlayHint">Tap to continue</p>
+            </div>
+          </div>
+          <div class="session-top">
+            <div class="progress-label"><span data-i18n="firstTryProgress">First-try progress</span></div>
+            <div id="progressBar" class="progress-bar"></div>
+          </div>
+
+          <div class="problem-card">
+            <div class="problem" id="problemText">7 + 3</div>
+            <form id="answerForm" autocomplete="off">
+              <input
+                id="answerInput"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                required
+              />
+            </form>
+            <div id="feedback" class="feedback"></div>
+            <div id="reaction" class="reaction" aria-hidden="true"></div>
+            <div id="roundMessage" class="round-message hidden"></div>
+          </div>
+
+          <div class="session-stats">
+            <div class="stat">
+              <div class="stat-label"><span data-i18n="attempt">Attempt</span></div>
+              <div class="stat-value" id="attemptCount">1</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label"><span data-i18n="correctFirstTry">Correct First Try</span></div>
+              <div class="stat-value" id="firstTryCount">0</div>
+            </div>
+            <div class="stat">
+              <div class="stat-label"><span data-i18n="time">Time</span></div>
+              <div class="stat-value" id="totalTime">00:00</div>
+            </div>
+          </div>
+
+          <button id="stopBtn" class="ghost"><span data-i18n="endSession">End Session</span></button>
+        </section>
+
+        <section id="review" class="summary hidden">
+          <div class="menu-card">
+            <h1 data-i18n="reviewTitle">Let’s review mistakes</h1>
+            <p class="hint" data-i18n="reviewHint">Here are the problems to revisit.</p>
+            <div id="reviewList" class="review-list"></div>
+            <button id="reviewContinueBtn" class="primary" data-i18n="reviewContinue">Continue to Summary</button>
+          </div>
+        </section>
+
+        <section id="summary" class="summary hidden">
+          <div class="menu-card">
+            <h1><span data-i18n="summaryTitle">Great work!</span></h1>
+            <p class="hint"><span data-i18n="summaryHint">Here is the session summary.</span></p>
+            <div class="summary-grid">
+              <div class="summary-item">
+                <span><span data-i18n="summaryAccuracyLabel">First-try accuracy</span></span>
+                <strong id="summaryAccuracy">0%</strong>
+              </div>
+              <div class="summary-item">
+                <span><span data-i18n="summaryTotalTimeLabel">Total time</span></span>
+                <strong id="summaryTotalTime">00:00</strong>
+              </div>
+              <div class="summary-item">
+                <span><span data-i18n="summaryFastestLabel">Fastest solved</span></span>
+                <strong id="summaryFastest">--</strong>
+              </div>
+              <div class="summary-item">
+                <span><span data-i18n="summarySlowestLabel">Slowest solved</span></span>
+                <strong id="summarySlowest">--</strong>
+              </div>
+            </div>
+            <button id="restartBtn" class="primary"><span data-i18n="playAgain">Play Again</span></button>
+          </div>
+        </section>
+      </main>
+
+      <footer class="footer">
+        Built for quick daily practice.
+      </footer>
+    </div>
+
+    <script src="logic.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
