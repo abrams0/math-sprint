@@ -1,5 +1,8 @@
 # Math Sprint
 
+![CI](https://github.com/abrams0/math-sprint/actions/workflows/ci.yml/badge.svg)
+
+
 A lightweight, browser-based practice app for fast mental math.
 
 ## Features
