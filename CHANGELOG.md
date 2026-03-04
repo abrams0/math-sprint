@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.2] - 2026-03-04
+### Fixed
+- Added missing adaptive toggle and heatmap UI elements to the menu.
+
 ## [1.6.1] - 2026-03-04
 ### Fixed
 - Added missing translations for adaptive difficulty and heatmap UI.
