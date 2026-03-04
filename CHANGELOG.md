@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.1] - 2026-03-04
+### Added
+- Deploy script for publishing `dist/` to GitHub Pages (gh-pages branch).
+
 ## [1.4.0] - 2026-03-04
 ### Added
 - Build step that outputs static files to `dist/`.
