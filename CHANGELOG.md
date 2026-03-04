@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.3] - 2026-03-04
+### Fixed
+- Build script now skips missing optional assets and favicon.svg added to repo.
+
 ## [1.6.2] - 2026-03-04
 ### Fixed
 - Added missing adaptive toggle and heatmap UI elements to the menu.

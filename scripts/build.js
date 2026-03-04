@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync } from "node:fs";
+import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
 const root = new URL("..", import.meta.url).pathname;
@@ -24,7 +24,12 @@ const files = [
 ];
 
 for (const file of files) {
-  copyFileSync(join(root, file), join(dist, file));
+  const src = join(root, file);
+  if (!existsSync(src)) {
+    console.warn(`Skipping missing file: ${file}`);
+    continue;
+  }
+  copyFileSync(src, join(dist, file));
 }
 
 // Cache-bust assets in dist/index.html
