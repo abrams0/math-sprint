@@ -1,10 +1,12 @@
 import { readFileSync, writeFileSync, mkdirSync, rmSync, copyFileSync, existsSync } from "node:fs";
-import { join } from "node:path";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
 
-const root = new URL("..", import.meta.url).pathname;
-const dist = join(root, "dist");
+const root = dirname(fileURLToPath(import.meta.url));
+const rootDir = join(root, "..");
+const dist = join(rootDir, "dist");
 
-const appJs = readFileSync(join(root, "app.js"), "utf8");
+const appJs = readFileSync(join(rootDir, "app.js"), "utf8");
 const versionMatch = appJs.match(/APP_VERSION\s*=\s*"([^"]+)"/);
 const version = versionMatch ? versionMatch[1] : "dev";
 
@@ -24,7 +26,7 @@ const files = [
 ];
 
 for (const file of files) {
-  const src = join(root, file);
+  const src = join(rootDir, file);
   if (!existsSync(src)) {
     console.warn(`Skipping missing file: ${file}`);
     continue;

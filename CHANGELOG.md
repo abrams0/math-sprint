@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.6.4] - 2026-03-04
+### Fixed
+- Adaptive toggle and heatmap button now render in the menu.
+- Build script handles paths with spaces.
+- Check button keeps focus on the answer field.
+
 ## [1.6.3] - 2026-03-04
 ### Fixed
 - Build script now skips missing optional assets and favicon.svg added to repo.
