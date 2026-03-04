@@ -23,6 +23,7 @@ const files = [
   "favicon.svg",
   "favicon.ico",
   "apple-touch-icon.png",
+  "CNAME",
 ];
 
 for (const file of files) {

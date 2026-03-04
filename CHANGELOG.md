@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.5] - 2026-03-04
+### Fixed
+- Preserve custom domain by copying CNAME into dist/ during build.
+
 ## [1.6.4] - 2026-03-04
 ### Fixed
 - Adaptive toggle and heatmap button now render in the menu.
