@@ -1,3 +1,7 @@
 
 # build output
 dist/
+
+# local screenshots
+bugs/
+.DS_Store
