@@ -1,5 +1,10 @@
 const operationButtons = document.getElementById("operationButtons");
 const countButtons = document.getElementById("countButtons");
+const adaptiveToggle = document.getElementById("adaptiveToggle");
+const heatmapBtn = document.getElementById("heatmapBtn");
+const heatmap = document.getElementById("heatmap");
+const heatmapList = document.getElementById("heatmapList");
+const heatmapCloseBtn = document.getElementById("heatmapCloseBtn");
 const presetButtons = document.getElementById("presetButtons");
 const maxNumberButtons = document.getElementById("maxNumberButtons");
 const { buildProblems, operations, advanceQueue } = window.MathSprintLogic || {};
@@ -38,8 +43,11 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.4.4";
+const APP_VERSION = "1.6.1";
 const DAILY_GOAL = 20;
+const STATS_KEY = "mathSprintStats";
+const DECK_KEY = "mathSprintDeck";
+const ADAPTIVE_KEY = "mathSprintAdaptive";
 
 const translations = {
   en: {
@@ -256,6 +264,8 @@ let firstAttemptIndex = 0;
 let firstRoundMistakes = 0;
 let mistakes = [];
 let streak = Number(localStorage.getItem("mathSprintStreak") || 0);
+let stats = loadStats();
+let deck = loadDeck();
 let lastCompleteDate = localStorage.getItem("mathSprintLastCompleteDate");
 let dailyProgress = Number(localStorage.getItem("mathSprintDailyProgress") || 0);
 let dailyProgressDate = localStorage.getItem("mathSprintProgressDate");
@@ -263,6 +273,7 @@ let roundMessageShown = false;
 let audioCtx = null;
 let audioAvailable = true;
 let isMuted = localStorage.getItem("mathSprintMuted") === "true";
+let adaptiveEnabled = localStorage.getItem(ADAPTIVE_KEY) === "true";
 
 const FEEDBACK_DELAY_CORRECT = 900;
 const FEEDBACK_DELAY_WRONG = 1200;
@@ -327,6 +338,11 @@ stopBtn.addEventListener("click", () => {
   endSession();
 });
 
+if (adaptiveToggle) adaptiveToggle.addEventListener("change", () => {
+  adaptiveEnabled = adaptiveToggle.checked;
+  localStorage.setItem(ADAPTIVE_KEY, String(adaptiveEnabled));
+});
+
 if (muteToggle) muteToggle.addEventListener("click", () => {
   isMuted = !isMuted;
   localStorage.setItem("mathSprintMuted", String(isMuted));
@@ -337,6 +353,17 @@ if (muteToggle) muteToggle.addEventListener("click", () => {
 reviewContinueBtn.addEventListener("click", () => {
   review.classList.add("hidden");
   summary.classList.remove("hidden");
+});
+
+if (heatmapBtn) heatmapBtn.addEventListener("click", () => {
+  renderHeatmap();
+  menu.classList.add("hidden");
+  heatmap.classList.remove("hidden");
+});
+
+if (heatmapCloseBtn) heatmapCloseBtn.addEventListener("click", () => {
+  heatmap.classList.add("hidden");
+  menu.classList.remove("hidden");
 });
 
 restartBtn.addEventListener("click", () => {
@@ -359,8 +386,26 @@ answerInput.addEventListener("input", () => {
   answerInput.value = answerInput.value.replace(/\\D+/g, "");
 });
 
+function getDueDeckProblems(limit) {
+  const now = Date.now();
+  const due = deck.filter((d) => d.nextDue <= now);
+  const slice = due.slice(0, limit);
+  return slice.map((d) => ({
+    a: d.a,
+    b: d.b,
+    op: d.op,
+    firstAttempted: false,
+    solved: false,
+    startTimestamp: null,
+  }));
+}
+
 function setupSession() {
-  queue = buildProblems(problemCount, maxNumber, Array.from(selectedOps));
+  const dueCount = Math.min(Math.max(3, Math.floor(problemCount * 0.3)), problemCount);
+  const dueProblems = deck.length ? getDueDeckProblems(dueCount) : [];
+  const remaining = problemCount - dueProblems.length;
+  const fresh = buildProblems(remaining, maxNumber, Array.from(selectedOps));
+  queue = [...dueProblems, ...fresh];
   progressBar.innerHTML = "";
   queue.forEach(() => {
     const segment = document.createElement("div");
@@ -430,6 +475,7 @@ function handleAnswer() {
 
   if (!currentProblem.firstAttempted) {
     const segment = progressBar.children[firstAttemptIndex];
+    currentProblem.firstAttemptCorrect = answer === expected;
     if (answer === expected) {
       segment.classList.add("correct");
       const label = segment.querySelector(".sr-only");
@@ -441,6 +487,7 @@ function handleAnswer() {
       if (label) label.textContent = "Incorrect";
       firstRoundMistakes += 1;
       mistakes.push({ a: currentProblem.a, b: currentProblem.b, op: currentProblem.op });
+      addToDeck(currentProblem);
     }
     currentProblem.firstAttempted = true;
     firstAttemptIndex += 1;
@@ -455,6 +502,10 @@ function handleAnswer() {
     const solveTime = Date.now() - currentProblem.startTimestamp;
     solvedTimes.push(solveTime);
     currentProblem.solved = true;
+    updateStatsForProblem(currentProblem, solveTime, !!currentProblem.firstAttemptCorrect);
+    if (currentProblem.firstAttemptCorrect) {
+      advanceDeck(currentProblem);
+    }
     queue = advanceQueue(queue, true);
     feedback.textContent = translations[currentLang].feedbackCorrect || "Nice!";
     feedback.classList.remove("wrong");
@@ -509,6 +560,8 @@ function endSession() {
     localStorage.setItem("mathSprintLastCompleteDate", lastCompleteDate);
   }
   updateDailyUI();
+
+  applyAdaptiveDifficulty();
 
   const accuracy = Math.round((firstTryCorrect / problemCount) * 100);
   summaryAccuracy.textContent = `${accuracy}%`;
@@ -750,4 +803,111 @@ if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./sw.js");
   });
+}
+
+function loadStats() {
+  try {
+    return JSON.parse(localStorage.getItem(STATS_KEY) || "{}");
+  } catch {
+    return {};
+  }
+}
+
+function saveStats() {
+  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+}
+
+function loadDeck() {
+  try {
+    return JSON.parse(localStorage.getItem(DECK_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function saveDeck() {
+  localStorage.setItem(DECK_KEY, JSON.stringify(deck));
+}
+
+function pairKey(op, a, b) {
+  if (op === "add" || op === "mul") {
+    const x = Math.min(a, b);
+    const y = Math.max(a, b);
+    return `${op}:${x},${y}`;
+  }
+  return `${op}:${a},${b}`;
+}
+
+function updateStatsForProblem(problem, solveTime, firstTryCorrect) {
+  const key = pairKey(problem.op, problem.a, problem.b);
+  const entry = stats[key] || { attempts: 0, firstTry: 0, totalTime: 0, bestTime: null, lastTime: null };
+  entry.attempts += 1;
+  if (firstTryCorrect) entry.firstTry += 1;
+  entry.totalTime += solveTime;
+  entry.lastTime = solveTime;
+  entry.bestTime = entry.bestTime === null ? solveTime : Math.min(entry.bestTime, solveTime);
+  stats[key] = entry;
+  saveStats();
+}
+
+function addToDeck(problem) {
+  const key = pairKey(problem.op, problem.a, problem.b);
+  const today = Date.now();
+  const existing = deck.find((d) => d.key === key);
+  if (existing) {
+    existing.interval = 1;
+    existing.nextDue = today;
+  } else {
+    deck.push({ key, op: problem.op, a: problem.a, b: problem.b, interval: 1, nextDue: today });
+  }
+  saveDeck();
+}
+
+function advanceDeck(problem) {
+  const key = pairKey(problem.op, problem.a, problem.b);
+  const existing = deck.find((d) => d.key === key);
+  if (!existing) return;
+  existing.interval = Math.min(14, Math.max(1, existing.interval * 2));
+  existing.nextDue = Date.now() + existing.interval * 24 * 60 * 60 * 1000;
+  saveDeck();
+}
+
+function renderHeatmap() {
+  if (!heatmapList) return;
+  heatmapList.innerHTML = "";
+  const entries = Object.entries(stats).map(([key, value]) => {
+    const avg = value.attempts ? value.totalTime / value.attempts : 0;
+    return { key, avg };
+  }).filter((e) => e.avg > 0);
+  entries.sort((a, b) => b.avg - a.avg);
+  const top = entries.slice(0, 12);
+  top.forEach((entry) => {
+    const row = document.createElement("div");
+    row.className = "review-item";
+    const [op, pair] = entry.key.split(":");
+    const [a, b] = pair.split(",");
+    const symbol = operations[op].label;
+    const seconds = (entry.avg / 1000).toFixed(1);
+    row.innerHTML = `<span>${a} ${symbol} ${b}</span><span>${seconds}s</span>`;
+    heatmapList.appendChild(row);
+  });
+}
+
+function applyAdaptiveDifficulty() {
+  if (!adaptiveEnabled) return;
+  const accuracy = problemCount ? firstTryCorrect / problemCount : 0;
+  const avgTime = solvedTimes.length ? solvedTimes.reduce((a,b) => a + b, 0) / solvedTimes.length : 0;
+  const steps = [10, 20, 30, 50, 100];
+  const idx = steps.indexOf(maxNumber);
+  let next = maxNumber;
+  if (accuracy >= 0.9 && avgTime < 2000 && idx < steps.length - 1) next = steps[idx + 1];
+  if ((accuracy <= 0.7 || avgTime > 4000) && idx > 0) next = steps[idx - 1];
+  if (next !== maxNumber) {
+    maxNumber = next;
+    if (maxNumberButtons) {
+      maxNumberButtons.querySelectorAll(".chip").forEach((btn) => {
+        btn.classList.toggle("active", Number(btn.dataset.max) === maxNumber);
+      });
+    }
+  }
 }

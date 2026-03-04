@@ -633,3 +633,21 @@ label {
   font-size: 18px;
   padding: 12px 18px;
 }
+
+#heatmapBtn {
+  margin-bottom: 12px;
+}
+
+.toggle-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+#adaptiveToggle {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--primary);
+}

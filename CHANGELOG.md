@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.6.1] - 2026-03-04
+### Fixed
+- Added missing translations for adaptive difficulty and heatmap UI.
+
+## [1.6.0] - 2026-03-04
+### Added
+- Adaptive difficulty toggle.
+- Spaced repetition due-item injection.
+- Fluency heatmap view.
+
+## [1.5.0] - 2026-03-04
+### Added
+- Learning depth foundations: per-pair stats tracking and spaced repetition deck.
+
 ## [1.4.4] - 2026-03-04
 ### Changed
 - Fastest solution now displays tenths of a second.

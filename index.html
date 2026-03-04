@@ -4,6 +4,9 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Math Sprint</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
     <meta name="description" content="Fast practice for math operations." />
     <meta property="og:title" content="Math Sprint" />
     <meta property="og:description" content="Fast practice for math operations." />
@@ -132,6 +135,15 @@
           </div>
 
           <button id="stopBtn" class="ghost"><span data-i18n="endSession">End Session</span></button>
+        </section>
+
+        <section id="heatmap" class="summary hidden">
+          <div class="menu-card">
+            <h1 data-i18n="heatmapTitle">Fluency Heatmap</h1>
+            <p class="hint" data-i18n="heatmapHint">Slowest pairs based on average solve time.</p>
+            <div id="heatmapList" class="review-list"></div>
+            <button id="heatmapCloseBtn" class="primary" data-i18n="heatmapClose">Back</button>
+          </div>
         </section>
 
         <section id="review" class="summary hidden">

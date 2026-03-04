@@ -6,6 +6,9 @@
 A lightweight, browser-based practice app for fast mental math.
 
 ## Features
+- Adaptive difficulty.
+- Spaced repetition for missed pairs.
+- Fluency heatmap of slowest pairs.
 - Multiplication and division practice (1–10 only).
 - Addition and subtraction practice within a chosen max number.
 - Multiple operations per session.
