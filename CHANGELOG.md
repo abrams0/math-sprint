@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.7.0] - 2026-03-04
+### Added
+- Average time and best average metrics with record indicator.
+- Graded round-break messages based on mistake rate.
+
+## [1.6.6] - 2026-03-04
+### Fixed
+- Answer input now blocks non-numeric characters, including on paste.
+
 ## [1.6.5] - 2026-03-04
 ### Fixed
 - Preserve custom domain by copying CNAME into dist/ during build.
