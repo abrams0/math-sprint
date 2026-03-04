@@ -37,7 +37,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.2.6";
+const APP_VERSION = "1.3.0";
 const DAILY_GOAL = 20;
 
 const translations = {
@@ -260,6 +260,7 @@ let dailyProgress = Number(localStorage.getItem("mathSprintDailyProgress") || 0)
 let dailyProgressDate = localStorage.getItem("mathSprintProgressDate");
 let roundMessageShown = false;
 let audioCtx = null;
+let audioAvailable = true;
 let isMuted = localStorage.getItem("mathSprintMuted") === "true";
 
 const FEEDBACK_DELAY_CORRECT = 900;
@@ -551,8 +552,18 @@ function showReaction(isCorrect) {
 }
 
 function ensureAudioContext() {
+  if (!audioAvailable) return;
   if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    try {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    } catch (err) {
+      audioAvailable = false;
+      isMuted = true;
+      if (typeof localStorage !== "undefined") {
+        localStorage.setItem("mathSprintMuted", "true");
+      }
+      updateMuteUI();
+    }
   }
 }
 
@@ -717,4 +728,10 @@ function updateDailyUI() {
 function focusAnswerInput() {
   if (!answerInput) return;
   setTimeout(() => answerInput.focus(), 0);
+}
+
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js");
+  });
 }

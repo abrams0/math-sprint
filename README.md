@@ -32,3 +32,15 @@ Run commands from the app folder (where `package.json` lives).
 - Run tests: `npm test`
 - Run lint: `npm run lint`
 
+
+## Accessibility
+- Keyboard focus styles enabled for all controls.
+- ARIA labels and live regions for problem and feedback.
+- Progress bar shows symbols (✓/✕) in addition to color.
+
+
+## Performance & Reliability
+- Fonts use local system stacks (no network dependency).
+- Offline support via service worker.
+- Audio gracefully disables if AudioContext is unavailable.
+

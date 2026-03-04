@@ -4,14 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title><span data-i18n="appTitle">Math Sprint</span></title>
-    <link rel="stylesheet" href="styles.css" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
+    <link rel="stylesheet" href="styles.css" />  </head>
   <body>
     <div class="app">
       <header class="brand">
@@ -100,17 +93,18 @@
           </div>
 
           <div class="problem-card">
-            <div class="problem" id="problemText">7 + 3</div>
+            <div class="problem" id="problemText" role="status" aria-live="polite">7 + 3</div>
             <form id="answerForm" autocomplete="off">
               <input
                 id="answerInput"
                 type="text"
+                aria-label="Answer"
                 inputmode="numeric"
                 pattern="[0-9]*"
                 required
               />
             </form>
-            <div id="feedback" class="feedback"></div>
+            <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
             <div id="reaction" class="reaction" aria-hidden="true"></div>
             <div id="roundMessage" class="round-message hidden"></div>
           </div>

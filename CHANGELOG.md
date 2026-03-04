@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.0] - 2026-03-04
+### Added
+- Offline support with a service worker and manifest.
+- Audio fallback when AudioContext is unavailable.
+
+### Changed
+- Switched to local system font stacks to remove network dependency.
+
 ## [1.2.6] - 2026-03-04
 ### Changed
 - Progress bar no longer shows ✓/✕; uses screen-reader labels only.
