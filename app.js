@@ -48,7 +48,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.7.9";
+const APP_VERSION = "1.8.0";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";
@@ -974,7 +974,7 @@ function applyAdaptiveDifficulty() {
   const idx = steps.indexOf(maxNumber);
   let next = maxNumber;
   if (accuracy >= 0.9 && avgTime < 4000 && idx < steps.length - 1) next = steps[idx + 1];
-  if ((accuracy <= 0.7 || avgTime > 6000) && idx > 0) next = steps[idx - 1];
+  if ((accuracy <= 0.7 || avgTime > 8000) && idx > 0) next = steps[idx - 1];
   if (next !== maxNumber) {
     maxNumber = next;
     if (maxNumberButtons) {
