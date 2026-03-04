@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.0] - 2026-03-04
+### Changed
+- Adaptive difficulty now decreases only if average time exceeds 8 seconds (or accuracy is low).
+
 ## [1.7.9] - 2026-03-04
 ### Changed
 - Adaptive difficulty thresholds updated (avg <4s to increase, avg >6s to decrease).
