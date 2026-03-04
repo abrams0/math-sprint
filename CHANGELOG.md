@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.3.5] - 2026-03-04
+### Changed
+- Regenerated favicon and Apple touch icon to match the app logo.
+
+## [1.3.4] - 2026-03-04
+### Added
+- Favicon and Apple touch icon.
+
 ## [1.3.3] - 2026-03-04
 ### Fixed
 - Clean browser tab title and added social meta tags.
