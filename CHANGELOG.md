@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.8] - 2026-03-04
+### Fixed
+- Centered the Play Again button.
+
 ## [1.7.7] - 2026-03-04
 ### Changed
 - Play Again button width reduced with padding.
