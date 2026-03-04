@@ -651,3 +651,28 @@ label {
   height: 18px;
   accent-color: var(--primary);
 }
+
+.avg-badge {
+  display: none;
+  font-size: 12px;
+  font-weight: 700;
+  color: #2b8556;
+}
+
+.avg-card.good {
+  background: #e9f7ef;
+}
+
+.avg-card.bad {
+  background: #ffe1e1;
+}
+
+.avg-badge.show {
+  display: inline-block;
+  animation: bounce 0.8s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}

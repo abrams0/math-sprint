@@ -35,6 +35,11 @@ const summaryAccuracy = document.getElementById("summaryAccuracy");
 const summaryTotalTime = document.getElementById("summaryTotalTime");
 const summaryFastest = document.getElementById("summaryFastest");
 const summarySlowest = document.getElementById("summarySlowest");
+const summaryAvg = document.getElementById("summaryAvg");
+const summaryBestAvg = document.getElementById("summaryBestAvg");
+const summaryAvgCard = document.getElementById("summaryAvgCard");
+if (summaryAvgCard) summaryAvgCard.classList.add("avg-card");
+const summaryAvgBadge = document.getElementById("summaryAvgBadge");
 const review = document.getElementById("review");
 const reviewList = document.getElementById("reviewList");
 const reviewContinueBtn = document.getElementById("reviewContinueBtn");
@@ -43,11 +48,12 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.6.5";
+const APP_VERSION = "1.7.0";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";
 const ADAPTIVE_KEY = "mathSprintAdaptive";
+const BEST_AVG_KEY = "mathSprintBestAvg";
 
 const translations = {
   en: {
@@ -74,6 +80,15 @@ const translations = {
     summaryTotalTimeLabel: "Total time",
     summaryFastestLabel: "Fastest solved",
     summarySlowestLabel: "Slowest solved",
+    summaryAvgLabel: "Average time",
+    summaryBestAvgLabel: "Best average",
+    avgNewRecord: "New record",
+    roundOverlayTitlePerfect: "Perfect round!",
+    roundOverlayTextPerfect: "Amazing focus. Let’s keep the streak going.",
+    roundOverlayTitleGood: "Great work!",
+    roundOverlayTextGood: "Just a few to polish—let’s finish strong.",
+    roundOverlayTitleEncourage: "Keep going!",
+    roundOverlayTextEncourage: "We’ll review the tricky ones and improve.",
     playAgain: "Play Again",
     footer: "Built for quick daily practice.",
     roundOverlayTitle: "Great first round!",
@@ -123,6 +138,15 @@ const translations = {
     summaryTotalTimeLabel: "Bendras laikas",
     summaryFastestLabel: "Greičiausiai išspręsta",
     summarySlowestLabel: "Lėčiausiai išspręsta",
+    summaryAvgLabel: "Vidutinis laikas",
+    summaryBestAvgLabel: "Geriausias vidurkis",
+    avgNewRecord: "Naujas rekordas",
+    roundOverlayTitlePerfect: "Puikus ratas!",
+    roundOverlayTextPerfect: "Puikus susikaupimas. Tęskime!",
+    roundOverlayTitleGood: "Šaunu!",
+    roundOverlayTextGood: "Liko kelios smulkmenos — užbaikime stipriai.",
+    roundOverlayTitleEncourage: "Pirmyn!",
+    roundOverlayTextEncourage: "Peržiūrėsime sunkesnes ir pagerėsime.",
     playAgain: "Kartoti",
     footer: "Sukurta kasdienei praktikai.",
     roundOverlayTitle: "Puikus pirmas ratas!",
@@ -172,6 +196,15 @@ const translations = {
     summaryTotalTimeLabel: "Gesamtzeit",
     summaryFastestLabel: "Schnellste Lösung",
     summarySlowestLabel: "Langsamste Lösung",
+    summaryAvgLabel: "Durchschnittszeit",
+    summaryBestAvgLabel: "Bester Durchschnitt",
+    avgNewRecord: "Neuer Rekord",
+    roundOverlayTitlePerfect: "Perfekte Runde!",
+    roundOverlayTextPerfect: "Starke Konzentration. Weiter so!",
+    roundOverlayTitleGood: "Gute Arbeit!",
+    roundOverlayTextGood: "Nur noch ein paar Kleinigkeiten — wir schaffen das.",
+    roundOverlayTitleEncourage: "Weiter so!",
+    roundOverlayTextEncourage: "Wir gehen die kniffligen nochmal durch.",
     playAgain: "Nochmal spielen",
     footer: "Für tägliches Kurztraining gebaut.",
     roundOverlayTitle: "Starker erster Durchgang!",
@@ -221,6 +254,15 @@ const translations = {
     summaryTotalTimeLabel: "Общее время",
     summaryFastestLabel: "Самое быстрое решение",
     summarySlowestLabel: "Самое медленное решение",
+    summaryAvgLabel: "Среднее время",
+    summaryBestAvgLabel: "Лучший средний",
+    avgNewRecord: "Новый рекорд",
+    roundOverlayTitlePerfect: "Идеальный раунд!",
+    roundOverlayTextPerfect: "Отличная концентрация. Продолжаем!",
+    roundOverlayTitleGood: "Хорошая работа!",
+    roundOverlayTextGood: "Осталось чуть‑чуть — заканчиваем уверенно.",
+    roundOverlayTitleEncourage: "Не сдавайся!",
+    roundOverlayTextEncourage: "Повторим сложные и станем лучше.",
     playAgain: "Играть снова",
     footer: "Для короткой ежедневной практики.",
     roundOverlayTitle: "Отличный первый раунд!",
@@ -266,6 +308,7 @@ let mistakes = [];
 let streak = Number(localStorage.getItem("mathSprintStreak") || 0);
 let stats = loadStats();
 let deck = loadDeck();
+let bestAvgMs = Number(localStorage.getItem(BEST_AVG_KEY) || 0);
 let lastCompleteDate = localStorage.getItem("mathSprintLastCompleteDate");
 let dailyProgress = Number(localStorage.getItem("mathSprintDailyProgress") || 0);
 let dailyProgressDate = localStorage.getItem("mathSprintProgressDate");
@@ -572,8 +615,21 @@ function endSession() {
   if (solvedTimes.length > 0) {
     const fastest = Math.min(...solvedTimes);
     const slowest = Math.max(...solvedTimes);
+    const avg = solvedTimes.reduce((a,b) => a + b, 0) / solvedTimes.length;
     summaryFastest.textContent = formatDurationWithTenths(fastest);
     summarySlowest.textContent = formatDuration(slowest);
+    if (summaryAvg) summaryAvg.textContent = formatDurationWithTenths(avg);
+    if (summaryBestAvg) summaryBestAvg.textContent = bestAvgMs ? formatDurationWithTenths(bestAvgMs) : "--";
+    if (summaryAvgCard) summaryAvgCard.classList.remove("good", "bad");
+    if (summaryAvgBadge) summaryAvgBadge.classList.remove("show");
+    if (!bestAvgMs || avg < bestAvgMs) {
+      bestAvgMs = avg;
+      localStorage.setItem(BEST_AVG_KEY, String(bestAvgMs));
+      if (summaryAvgCard) summaryAvgCard.classList.add("good", "avg-card");
+      if (summaryAvgBadge) summaryAvgBadge.classList.add("show");
+    } else if (avg > bestAvgMs * 1.05) {
+      if (summaryAvgCard) summaryAvgCard.classList.add("bad", "avg-card");
+    }
   } else {
     summaryFastest.textContent = "--";
     summarySlowest.textContent = "--";
@@ -660,8 +716,17 @@ function playSound(isCorrect) {
 
 function showRoundMessage() {
   const t = translations[currentLang] || translations.en;
-  roundOverlayTitle.textContent = t.roundOverlayTitle || "Great first round!";
-  roundOverlayText.textContent = t.roundOverlayText || "Now let’s revisit the tricky ones and lock them in.";
+  const mistakeRate = problemCount ? firstRoundMistakes / problemCount : 0;
+  if (mistakeRate === 0) {
+    roundOverlayTitle.textContent = t.roundOverlayTitlePerfect || t.roundOverlayTitle || "Perfect round!";
+    roundOverlayText.textContent = t.roundOverlayTextPerfect || t.roundOverlayText || "Amazing focus. Let’s keep the streak going.";
+  } else if (mistakeRate <= 0.1) {
+    roundOverlayTitle.textContent = t.roundOverlayTitleGood || t.roundOverlayTitle || "Great work!";
+    roundOverlayText.textContent = t.roundOverlayTextGood || t.roundOverlayText || "Just a few to polish—let’s finish strong.";
+  } else {
+    roundOverlayTitle.textContent = t.roundOverlayTitleEncourage || t.roundOverlayTitle || "Keep going!";
+    roundOverlayText.textContent = t.roundOverlayTextEncourage || t.roundOverlayText || "We’ll review the tricky ones and improve.";
+  }
   roundOverlay.classList.remove("hidden");
   setTimeout(() => {
     roundOverlay.classList.add("hidden");
