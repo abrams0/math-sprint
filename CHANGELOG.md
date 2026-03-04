@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.7] - 2026-03-04
+### Changed
+- Play Again button width reduced with padding.
+- Footer moved back to bottom center.
+
 ## [1.7.6] - 2026-03-04
 ### Changed
 - Problem generator avoids repeating the same answer back-to-back.
