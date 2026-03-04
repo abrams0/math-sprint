@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.9] - 2026-03-04
+### Changed
+- Adaptive difficulty thresholds updated (avg <4s to increase, avg >6s to decrease).
+- Adaptive difficulty enabled by default.
+
 ## [1.7.8] - 2026-03-04
 ### Fixed
 - Centered the Play Again button.
