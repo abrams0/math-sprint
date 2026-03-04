@@ -43,7 +43,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.6.3";
+const APP_VERSION = "1.6.4";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";
@@ -374,11 +374,13 @@ restartBtn.addEventListener("click", () => {
 answerForm.addEventListener("submit", (event) => {
   event.preventDefault();
   handleAnswer();
+  focusAnswerInput();
 });
 
 if (submitAnswerBtn) {
   submitAnswerBtn.addEventListener("click", () => {
     handleAnswer();
+    focusAnswerInput();
   });
 }
 
