@@ -37,7 +37,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.2.4";
+const APP_VERSION = "1.2.6";
 const DAILY_GOAL = 20;
 
 const translations = {
@@ -357,6 +357,10 @@ function setupSession() {
   queue.forEach(() => {
     const segment = document.createElement("div");
     segment.className = "progress-segment";
+    const mark = document.createElement("span");
+    mark.className = "sr-only";
+    mark.textContent = "Not attempted";
+    segment.appendChild(mark);
     progressBar.appendChild(segment);
   });
 
@@ -420,9 +424,13 @@ function handleAnswer() {
     const segment = progressBar.children[firstAttemptIndex];
     if (answer === expected) {
       segment.classList.add("correct");
+      const label = segment.querySelector(".sr-only");
+      if (label) label.textContent = "Correct";
       firstTryCorrect += 1;
     } else {
       segment.classList.add("wrong");
+      const label = segment.querySelector(".sr-only");
+      if (label) label.textContent = "Incorrect";
       firstRoundMistakes += 1;
       mistakes.push({ a: currentProblem.a, b: currentProblem.b, op: currentProblem.op });
     }
@@ -570,8 +578,9 @@ function playSound(isCorrect) {
 }
 
 function showRoundMessage() {
-  roundOverlayTitle.textContent = "Great first round!";
-  roundOverlayText.textContent = "Now let’s revisit the tricky ones and lock them in.";
+  const t = translations[currentLang] || translations.en;
+  roundOverlayTitle.textContent = t.roundOverlayTitle || "Great first round!";
+  roundOverlayText.textContent = t.roundOverlayText || "Now let’s revisit the tricky ones and lock them in.";
   roundOverlay.classList.remove("hidden");
   setTimeout(() => {
     roundOverlay.classList.add("hidden");

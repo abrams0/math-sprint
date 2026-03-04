@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.2.6] - 2026-03-04
+### Changed
+- Progress bar no longer shows ✓/✕; uses screen-reader labels only.
+- Round-break overlay now uses translations.
+
+## [1.2.5] - 2026-03-04
+### Added
+- Accessibility improvements: focus styles, ARIA labels, and non-color progress indicators.
+
 ## [1.2.4] - 2026-03-04
 ### Fixed
 - Cleaned up logic modules and tests after prior merge artifacts.
