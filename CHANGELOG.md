@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.7.1] - 2026-03-04
+### Fixed
+- Added missing average-time summary elements to the UI.
+
 ## [1.7.0] - 2026-03-04
 ### Added
 - Average time and best average metrics with record indicator.
