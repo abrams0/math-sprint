@@ -4,15 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Math Sprint</title>
-    <link rel="icon" href="favicon.svg?v=1.7.2" type="image/svg+xml" />
-    <link rel="icon" href="favicon.ico?v=1.7.2" sizes="any" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.7.2" />
+    <link rel="icon" href="favicon.svg?v=1.7.3" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico?v=1.7.3" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.7.3" />
     <meta name="description" content="Fast practice for math operations." />
     <meta property="og:title" content="Math Sprint" />
     <meta property="og:description" content="Fast practice for math operations." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="styles.css?v=1.7.2" />  </head>
+    <link rel="stylesheet" href="styles.css?v=1.7.3" />  </head>
   <body>
     <div class="app">
       <header class="brand">
@@ -159,7 +159,7 @@
           <div class="menu-card">
             <h1><span data-i18n="summaryTitle">Great work!</span></h1>
             <p class="hint"><span data-i18n="summaryHint">Here is the session summary.</span></p>
-            <div class="summary-grid">
+                        <div class="summary-grid">
               <div class="summary-item">
                 <span><span data-i18n="summaryAccuracyLabel">First-try accuracy</span></span>
                 <strong id="summaryAccuracy">0%</strong>
@@ -172,6 +172,10 @@
                 <span><span data-i18n="summaryFastestLabel">Fastest solved</span></span>
                 <strong id="summaryFastest">--</strong>
               </div>
+              <div class="summary-item">
+                <span><span data-i18n="summarySlowestLabel">Slowest solved</span></span>
+                <strong id="summarySlowest">--</strong>
+              </div>
               <div class="summary-item" id="summaryAvgCard">
                 <span><span data-i18n="summaryAvgLabel">Average time</span></span>
                 <strong id="summaryAvg">--</strong>
@@ -181,11 +185,8 @@
                 <span><span data-i18n="summaryBestAvgLabel">Best average</span></span>
                 <strong id="summaryBestAvg">--</strong>
               </div>
-              <div class="summary-item">
-                <span><span data-i18n="summarySlowestLabel">Slowest solved</span></span>
-                <strong id="summarySlowest">--</strong>
-              </div>
             </div>
+</div>
             <button id="restartBtn" class="primary"><span data-i18n="playAgain">Play Again</span></button>
           </div>
         </section>
@@ -196,7 +197,7 @@
       </footer>
     </div>
 
-    <script src="logic.js?v=1.7.2"></script>
-    <script src="app.js?v=1.7.2"></script>
+    <script src="logic.js?v=1.7.3"></script>
+    <script src="app.js?v=1.7.3"></script>
   </body>
 </html>
