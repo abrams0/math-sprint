@@ -4,15 +4,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Math Sprint</title>
-    <link rel="icon" href="favicon.svg?v=1.8.0" type="image/svg+xml" />
-    <link rel="icon" href="favicon.ico?v=1.8.0" sizes="any" />
-    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.8.0" />
+    <link rel="icon" href="favicon.svg?v=1.8.3" type="image/svg+xml" />
+    <link rel="icon" href="favicon.ico?v=1.8.3" sizes="any" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png?v=1.8.3" />
+    <link rel="manifest" href="manifest.json?v=1.8.3" />
     <meta name="description" content="Fast practice for math operations." />
     <meta property="og:title" content="Math Sprint" />
     <meta property="og:description" content="Fast practice for math operations." />
     <meta property="og:type" content="website" />
 
-    <link rel="stylesheet" href="styles.css?v=1.8.0" />  </head>
+    <link rel="stylesheet" href="styles.css?v=1.8.3" />  </head>
   <body>
     <div class="app">
       <header class="brand">
@@ -23,12 +24,12 @@
           <div class="subtitle"><span data-i18n="appSubtitle">Fast practice for math operations</span></div>
         </div>
               <div class="header-controls">
-          <button id="muteToggle" class="mute-btn" aria-label="Toggle sound" title="Toggle sound">🔊</button>
+          <button id="muteToggle" class="mute-btn" type="button" aria-label="Sound on" aria-pressed="false" title="Sound on">🔊</button>
           <div class="lang-selector" id="langSelector">
-          <button class="lang-btn active" data-lang="en" aria-label="English">🇬🇧</button>
-          <button class="lang-btn" data-lang="lt" aria-label="Lithuanian">🇱🇹</button>
-          <button class="lang-btn" data-lang="de" aria-label="German">🇩🇪</button>
-          <button class="lang-btn" data-lang="ru" aria-label="Russian">🇷🇺</button>
+          <button class="lang-btn active" type="button" data-lang="en" aria-label="English" aria-pressed="true">🇬🇧</button>
+          <button class="lang-btn" type="button" data-lang="lt" aria-label="Lithuanian" aria-pressed="false">🇱🇹</button>
+          <button class="lang-btn" type="button" data-lang="de" aria-label="German" aria-pressed="false">🇩🇪</button>
+          <button class="lang-btn" type="button" data-lang="ru" aria-label="Russian" aria-pressed="false">🇷🇺</button>
         </div>
         </div>
       </header>
@@ -59,53 +60,54 @@
             <div class="control">
               <label data-i18n="maxNumberLabel">Max number</label>
               <div class="button-row" id="maxNumberButtons">
-                <button class="chip" data-max="10">10</button>
-                <button class="chip active" data-max="20">20</button>
-                <button class="chip" data-max="30">30</button>
-                <button class="chip" data-max="50">50</button>
-                <button class="chip" data-max="100">100</button>
+                <button class="chip" data-max="10" aria-pressed="false">10</button>
+                <button class="chip active" data-max="20" aria-pressed="true">20</button>
+                <button class="chip" data-max="30" aria-pressed="false">30</button>
+                <button class="chip" data-max="50" aria-pressed="false">50</button>
+                <button class="chip" data-max="100" aria-pressed="false">100</button>
               </div>
             </div>
 
             <div class="control">
               <label><span data-i18n="operationsLabel">Operations (pick one or more)</span></label>
               <div class="button-row" id="operationButtons">
-                <button class="toggle active" data-op="add"><span data-i18n="addition">Addition</span></button>
-                <button class="toggle" data-op="sub"><span data-i18n="subtraction">Subtraction</span></button>
-                <button class="toggle" data-op="mul"><span data-i18n="multiplicationSoon">Multiplication</span></button>
-                <button class="toggle" data-op="div"><span data-i18n="divisionSoon">Division</span></button>
+                <button class="toggle active" type="button" data-op="add" aria-pressed="true"><span data-i18n="addition">Addition</span></button>
+                <button class="toggle" type="button" data-op="sub" aria-pressed="false"><span data-i18n="subtraction">Subtraction</span></button>
+                <button class="toggle" type="button" data-op="mul" aria-pressed="false"><span data-i18n="multiplicationSoon">Multiplication</span></button>
+                <button class="toggle" type="button" data-op="div" aria-pressed="false"><span data-i18n="divisionSoon">Division</span></button>
               </div>
             </div>
 
             <div class="control">
-              <label><span data-i18n="adaptiveLabel">Adaptive difficulty</span></label>
+              <label for="adaptiveToggle"><span data-i18n="adaptiveLabel">Adaptive difficulty</span></label>
               <div class="toggle-row">
-                <input id="adaptiveToggle" type="checkbox" />
-                <span data-i18n="adaptiveHint">Adjusts max based on speed and accuracy.</span>
+                <input id="adaptiveToggle" type="checkbox" aria-describedby="adaptiveHint" />
+                <span id="adaptiveHint" data-i18n="adaptiveHint">Adjusts max based on speed and accuracy.</span>
               </div>
             </div>
 
             <div class="control">
               <label><span data-i18n="problemsPerSession">Problems per session</span></label>
               <div class="button-row" id="countButtons">
-                <button class="chip active" data-count="10">10</button>
-                <button class="chip" data-count="20">20</button>
-                <button class="chip" data-count="30">30</button>
-                <button class="chip" data-count="50">50</button>
+                <button class="chip active" data-count="10" aria-pressed="true">10</button>
+                <button class="chip" data-count="20" aria-pressed="false">20</button>
+                <button class="chip" data-count="30" aria-pressed="false">30</button>
+                <button class="chip" data-count="50" aria-pressed="false">50</button>
               </div>
             </div>
 
             <button id="heatmapBtn" class="ghost" data-i18n="heatmapButton">Fluency heatmap</button>
             <button id="startBtn" class="primary"><span data-i18n="startSession">Start Session</span></button>
+            <a href="./v2/" class="new-version-button" data-i18n="newVersion">New version ✨</a>
           </div>
         </section>
 
         <section id="session" class="session hidden">
-          <div id="roundOverlay" class="round-overlay hidden" role="status" aria-live="polite">
+          <div id="roundOverlay" class="round-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="roundOverlayTitle" aria-describedby="roundOverlayText">
             <div class="round-overlay-card">
               <h2 id="roundOverlayTitle" data-i18n="roundOverlayTitle">Great first round!</h2>
               <p id="roundOverlayText" data-i18n="roundOverlayText">Now let’s revisit the tricky ones and get them right.</p>
-              <p id="roundOverlayHint" class="round-overlay-hint" data-i18n="roundOverlayHint">Tap to continue</p>
+              <button id="roundOverlayContinue" class="primary" type="button" data-i18n="roundOverlayContinue">Continue</button>
             </div>
           </div>
           <div class="session-top">
@@ -205,10 +207,10 @@
         </section>
       </main>
 
-      <footer class="footer">
+      <footer class="footer"><span data-i18n="footer">Built for quick daily practice.</span></footer>
     </div>
 
-    <script src="logic.js?v=1.8.0"></script>
-    <script src="app.js?v=1.8.0"></script>
+    <script src="logic.js?v=1.8.3"></script>
+    <script src="app.js?v=1.8.3"></script>
   </body>
 </html>
