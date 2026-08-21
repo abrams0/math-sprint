@@ -1,14 +1,14 @@
-const CACHE_NAME = "math-sprint-v2-2.0.3";
+const CACHE_NAME = "math-sprint-v2-2.0.4";
 const ASSETS = [
-  "./?v=2.0.3",
-  "./index.html?v=2.0.3",
-  "./styles.css?v=2.0.3",
-  "./app.js?v=2.0.3",
-  "./logic.js?v=2.0.3",
-  "./manifest.json?v=2.0.3",
-  "./favicon.svg?v=2.0.3",
-  "./favicon.ico?v=2.0.3",
-  "./apple-touch-icon.png?v=2.0.3"
+  "./?v=2.0.4",
+  "./index.html?v=2.0.4",
+  "./styles.css?v=2.0.4",
+  "./app.js?v=2.0.4",
+  "./logic.js?v=2.0.4",
+  "./manifest.json?v=2.0.4",
+  "./favicon.svg?v=2.0.4",
+  "./favicon.ico?v=2.0.4",
+  "./apple-touch-icon.png?v=2.0.4"
 ];
 
 self.addEventListener("install", (event) => {
