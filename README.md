@@ -5,6 +5,19 @@
 
 A lightweight, browser-based practice app for fast mental math.
 
+## Version 2
+
+Version 2 runs alongside the original app at `/v2/`. The original root URL remains available and both home screens contain a direct version switch.
+
+V2 is designed around confidence-first practice:
+- Smart sprints prioritize division and multiplication weaknesses while beginning with approachable 2, 3, 5, and 10 fact families.
+- Division mistakes receive an inverse multiplication clue and an immediate retry.
+- Personal-best competition rewards first-try accuracy and successful corrections more than raw speed.
+- Per-fact mastery and due dates adapt future problem selection without changing V1 data.
+- Weekly progress, skill mastery, first-try accuracy, correction count, median pace, and recent sessions are stored locally and shown in Insights.
+- Progress can be exported as a private JSON report.
+- The complete V2 interface is available in English, Lithuanian, German, and Russian.
+
 ## Features
 - Avoids repetitive answers back-to-back in a session.
 - Adaptive difficulty.
@@ -34,6 +47,7 @@ This project uses semantic versioning: `MAJOR.MINOR.PATCH`.
 Run commands from the app folder (where `package.json` lives).
 - Run tests: `npm test`
 - Run lint: `npm run lint`
+- Build both versions: `npm run build`
 
 
 ## Accessibility
@@ -52,4 +66,3 @@ Run commands from the app folder (where `package.json` lives).
 - Build: `npm run build` (outputs to `dist/`)
 - GitHub Pages auto-deploys on every push to `main`.
 - Manual deploy (optional): `scripts/deploy-pages.sh`
-

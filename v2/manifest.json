@@ -1,0 +1,13 @@
+{
+  "name": "Math Sprint V2",
+  "short_name": "Math Sprint",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fff9ef",
+  "theme_color": "#ff7a18",
+  "icons": [
+    { "src": "apple-touch-icon.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

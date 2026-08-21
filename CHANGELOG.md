@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.3] - 2026-08-21
+### Added
+- Parallel confidence-first V2 at `/v2/`, with direct switching to and from V1.
+- Adaptive smart sprints, third-grade division and multiplication fact families, inverse-operation hints, correction-aware scoring, personal bests, XP, and local mastery scheduling.
+- Responsive dashboard, mobile number pad, session summaries, weekly progress, parent insights, session history, and JSON export.
+- Complete EN/LT/DE/RU interface and separate installable V2 PWA manifest/service worker.
+- Build and logic tests for both versions, cache isolation, cache-busted module imports, and deployment artifacts.
+
+### Fixed
+- Invalid V2 division mapping discovered during browser QA.
+- V1 early-stop progress, stale callbacks, due-item filtering, numeric input handling, adaptive state, translations, accessibility states, and actionable round transition.
+- V1/V2 offline cache collisions and versioned-asset mismatches.
+
 ## [1.8.0] - 2026-03-04
 ### Changed
 - Adaptive difficulty now decreases only if average time exceeds 8 seconds (or accuracy is low).

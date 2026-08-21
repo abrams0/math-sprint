@@ -26,6 +26,7 @@ const roundMessage = document.getElementById("roundMessage");
 const roundOverlay = document.getElementById("roundOverlay");
 const roundOverlayTitle = document.getElementById("roundOverlayTitle");
 const roundOverlayText = document.getElementById("roundOverlayText");
+const roundOverlayContinue = document.getElementById("roundOverlayContinue");
 const reaction = document.getElementById("reaction");
 const attemptCountEl = document.getElementById("attemptCount");
 const firstTryCountEl = document.getElementById("firstTryCount");
@@ -48,7 +49,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.8.0";
+const APP_VERSION = "1.8.3";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";
@@ -112,7 +113,18 @@ const translations = {
     feedbackCorrect: "Nice!",
     feedbackWrong: "Try again later!",
     reactionHappy: "Yay!",
-    reactionSad: "Oops"
+    reactionSad: "Oops",
+    adaptiveLabel: "Adaptive difficulty",
+    adaptiveHint: "Adjusts the maximum number based on speed and accuracy.",
+    heatmapButton: "Fluency heatmap",
+    heatmapTitle: "Fluency Heatmap",
+    heatmapHint: "Slowest pairs based on average solve time.",
+    heatmapClose: "Back",
+    submitAnswer: "Check",
+    roundOverlayContinue: "Continue",
+    soundOn: "Sound on",
+    soundOff: "Sound off",
+    newVersion: "New version ✨"
   },
   lt: {
     appTitle: "Matematikos Sprintas",
@@ -170,7 +182,18 @@ const translations = {
     feedbackCorrect: "Šaunu!",
     feedbackWrong: "Bandysime dar kartą vėliau!",
     reactionHappy: "Valio!",
-    reactionSad: "Oi"
+    reactionSad: "Oi",
+    adaptiveLabel: "Prisitaikantis sudėtingumas",
+    adaptiveHint: "Keičia didžiausią skaičių pagal greitį ir tikslumą.",
+    heatmapButton: "Sklandumo žemėlapis",
+    heatmapTitle: "Sklandumo žemėlapis",
+    heatmapHint: "Lėčiausios poros pagal vidutinį sprendimo laiką.",
+    heatmapClose: "Atgal",
+    submitAnswer: "Tikrinti",
+    roundOverlayContinue: "Tęsti",
+    soundOn: "Garsas įjungtas",
+    soundOff: "Garsas išjungtas",
+    newVersion: "Nauja versija ✨"
   },
   de: {
     appTitle: "Mathe‑Sprint",
@@ -228,7 +251,18 @@ const translations = {
     feedbackCorrect: "Super!",
     feedbackWrong: "Später nochmal!",
     reactionHappy: "Juhu!",
-    reactionSad: "Oops"
+    reactionSad: "Ups",
+    adaptiveLabel: "Adaptive Schwierigkeit",
+    adaptiveHint: "Passt die maximale Zahl an Tempo und Genauigkeit an.",
+    heatmapButton: "Tempo-Heatmap",
+    heatmapTitle: "Tempo-Heatmap",
+    heatmapHint: "Langsamste Paare nach durchschnittlicher Lösungszeit.",
+    heatmapClose: "Zurück",
+    submitAnswer: "Prüfen",
+    roundOverlayContinue: "Weiter",
+    soundOn: "Ton an",
+    soundOff: "Ton aus",
+    newVersion: "Neue Version ✨"
   },
   ru: {
     appTitle: "Математический спринт",
@@ -286,7 +320,18 @@ const translations = {
     feedbackCorrect: "Отлично!",
     feedbackWrong: "Попробуем позже!",
     reactionHappy: "Ура!",
-    reactionSad: "Упс"
+    reactionSad: "Упс",
+    adaptiveLabel: "Адаптивная сложность",
+    adaptiveHint: "Меняет максимальное число по скорости и точности.",
+    heatmapButton: "Карта беглости",
+    heatmapTitle: "Карта беглости",
+    heatmapHint: "Самые медленные пары по среднему времени решения.",
+    heatmapClose: "Назад",
+    submitAnswer: "Проверить",
+    roundOverlayContinue: "Продолжить",
+    soundOn: "Звук включен",
+    soundOff: "Звук выключен",
+    newVersion: "Новая версия ✨"
   }
 };
 
@@ -313,6 +358,7 @@ let lastCompleteDate = localStorage.getItem("mathSprintLastCompleteDate");
 let dailyProgress = Number(localStorage.getItem("mathSprintDailyProgress") || 0);
 let dailyProgressDate = localStorage.getItem("mathSprintProgressDate");
 let roundMessageShown = false;
+let roundBreakPending = false;
 let audioCtx = null;
 let audioAvailable = true;
 let isMuted = localStorage.getItem("mathSprintMuted") === "true";
@@ -326,7 +372,11 @@ if (adaptiveEnabled === null) {
 
 const FEEDBACK_DELAY_CORRECT = 900;
 const FEEDBACK_DELAY_WRONG = 1200;
-const ROUND_OVERLAY_DURATION = 3500;
+const pendingTimeouts = new Set();
+let sessionActive = false;
+let isAdvancing = false;
+
+if (adaptiveToggle) adaptiveToggle.checked = adaptiveEnabled;
 
 if (operationButtons) operationButtons.addEventListener("click", (event) => {
   const button = event.target.closest("button");
@@ -341,6 +391,7 @@ if (operationButtons) operationButtons.addEventListener("click", (event) => {
     selectedOps.add(op);
     button.classList.add("active");
   }
+  button.setAttribute("aria-pressed", String(selectedOps.has(op)));
   focusAnswerInput();
 });
 
@@ -349,6 +400,7 @@ if (maxNumberButtons) maxNumberButtons.addEventListener("click", (event) => {
   if (!button) return;
   maxNumberButtons.querySelectorAll(".chip").forEach((btn) => {
     btn.classList.toggle("active", btn === button);
+    btn.setAttribute("aria-pressed", String(btn === button));
   });
   maxNumber = Number(button.dataset.max);
   focusAnswerInput();
@@ -363,7 +415,9 @@ if (presetButtons) presetButtons.addEventListener("click", (event) => {
   maxNumber = Number(button.dataset.max);
   if (maxNumberButtons) {
     maxNumberButtons.querySelectorAll(".chip").forEach((btn) => {
-      btn.classList.toggle("active", Number(btn.dataset.max) === maxNumber);
+      const active = Number(btn.dataset.max) === maxNumber;
+      btn.classList.toggle("active", active);
+      btn.setAttribute("aria-pressed", String(active));
     });
   }
   focusAnswerInput();
@@ -374,6 +428,7 @@ if (countButtons) countButtons.addEventListener("click", (event) => {
   if (!button) return;
   countButtons.querySelectorAll(".chip").forEach((btn) => {
     btn.classList.toggle("active", btn === button);
+    btn.setAttribute("aria-pressed", String(btn === button));
   });
   problemCount = Number(button.dataset.count);
   focusAnswerInput();
@@ -397,6 +452,13 @@ if (muteToggle) muteToggle.addEventListener("click", () => {
   localStorage.setItem("mathSprintMuted", String(isMuted));
   updateMuteUI();
   focusAnswerInput();
+});
+
+if (roundOverlayContinue) roundOverlayContinue.addEventListener("click", () => {
+  if (!roundBreakPending) return;
+  roundBreakPending = false;
+  roundOverlay.classList.add("hidden");
+  scheduleCallback(nextProblem, 0);
 });
 
 reviewContinueBtn.addEventListener("click", () => {
@@ -434,12 +496,17 @@ if (submitAnswerBtn) {
 }
 
 answerInput.addEventListener("input", () => {
-  answerInput.value = answerInput.value.replace(/\\D+/g, "");
+  answerInput.value = answerInput.value.replace(/\D+/g, "");
 });
 
 function getDueDeckProblems(limit) {
   const now = Date.now();
-  const due = deck.filter((d) => d.nextDue <= now);
+  const due = deck.filter((d) => (
+    d.nextDue <= now
+    && selectedOps.has(d.op)
+    && operations[d.op]
+    && operations[d.op].solve(d.a, d.b) <= maxNumber
+  ));
   const slice = due.slice(0, limit);
   return slice.map((d) => ({
     a: d.a,
@@ -452,6 +519,7 @@ function getDueDeckProblems(limit) {
 }
 
 function setupSession() {
+  clearPendingCallbacks();
   const dueCount = Math.min(Math.max(3, Math.floor(problemCount * 0.3)), problemCount);
   const dueProblems = deck.length ? getDueDeckProblems(dueCount) : [];
   const remaining = problemCount - dueProblems.length;
@@ -475,9 +543,12 @@ function setupSession() {
   firstRoundMistakes = 0;
   mistakes = [];
   roundMessageShown = false;
+  roundBreakPending = false;
   roundMessage.classList.add("hidden");
   roundMessage.textContent = "";
   roundOverlay.classList.add("hidden");
+  sessionActive = true;
+  isAdvancing = false;
 
   menu.classList.add("hidden");
   summary.classList.add("hidden");
@@ -491,6 +562,8 @@ function setupSession() {
 }
 
 function nextProblem() {
+  if (!sessionActive) return;
+  isAdvancing = false;
   if (queue.length === 0) {
     endSession();
     return;
@@ -512,7 +585,7 @@ function nextProblem() {
 }
 
 function handleAnswer() {
-  if (!currentProblem) return;
+  if (!sessionActive || isAdvancing || !currentProblem) return;
 
   const answer = Number(answerInput.value);
   if (Number.isNaN(answer) || answerInput.value.trim() === "") return;
@@ -524,6 +597,7 @@ function handleAnswer() {
 
   attempts += 1;
 
+  let pauseForRoundBreak = false;
   if (!currentProblem.firstAttempted) {
     const segment = progressBar.children[firstAttemptIndex];
     currentProblem.firstAttemptCorrect = answer === expected;
@@ -543,9 +617,9 @@ function handleAnswer() {
     currentProblem.firstAttempted = true;
     firstAttemptIndex += 1;
     if (firstAttemptIndex === problemCount && !roundMessageShown && firstRoundMistakes > 0) {
-      const overlayDuration = showRoundMessage();
-      currentProblem.overlayDelay = overlayDuration;
+      showRoundMessage();
       roundMessageShown = true;
+      pauseForRoundBreak = true;
     }
   }
 
@@ -562,16 +636,18 @@ function handleAnswer() {
     feedback.classList.remove("wrong");
     showReaction(true);
     playSound(true);
-    const delay = Math.max(FEEDBACK_DELAY_CORRECT, currentProblem.overlayDelay || 0);
-    setTimeout(nextProblem, delay);
+    isAdvancing = true;
+    if (pauseForRoundBreak) roundBreakPending = true;
+    else scheduleCallback(nextProblem, FEEDBACK_DELAY_CORRECT);
   } else {
     feedback.textContent = translations[currentLang].feedbackWrong || "Try again later!";
     feedback.classList.add("wrong");
     showReaction(false);
     playSound(false);
     queue = advanceQueue(queue, false);
-    const delay = Math.max(FEEDBACK_DELAY_WRONG, currentProblem.overlayDelay || 0);
-    setTimeout(nextProblem, delay);
+    isAdvancing = true;
+    if (pauseForRoundBreak) roundBreakPending = true;
+    else scheduleCallback(nextProblem, FEEDBACK_DELAY_WRONG);
   }
 
   updateStats();
@@ -583,7 +659,15 @@ function updateStats() {
 }
 
 function endSession() {
+  if (!sessionActive) return;
+  const completedFirstRound = firstAttemptIndex;
+  sessionActive = false;
+  isAdvancing = false;
+  roundBreakPending = false;
+  clearPendingCallbacks();
   stopTimer();
+  roundOverlay.classList.add("hidden");
+  currentProblem = null;
   session.classList.add("hidden");
   if (mistakes.length > 0) {
     renderReview();
@@ -595,7 +679,7 @@ function endSession() {
 
   updateDailyProgressDate();
   const today = getLocalDateKey();
-  dailyProgress += problemCount;
+  dailyProgress += completedFirstRound;
   dailyProgressDate = today;
   localStorage.setItem("mathSprintDailyProgress", String(dailyProgress));
   localStorage.setItem("mathSprintProgressDate", dailyProgressDate);
@@ -612,9 +696,9 @@ function endSession() {
   }
   updateDailyUI();
 
-  applyAdaptiveDifficulty();
+  applyAdaptiveDifficulty(completedFirstRound);
 
-  const accuracy = Math.round((firstTryCorrect / problemCount) * 100);
+  const accuracy = completedFirstRound ? Math.round((firstTryCorrect / completedFirstRound) * 100) : 0;
   summaryAccuracy.textContent = `${accuracy}%`;
   summaryTotalTime.textContent = formatDuration(Date.now() - sessionStart);
 
@@ -654,6 +738,19 @@ function stopTimer() {
     clearInterval(timerInterval);
     timerInterval = null;
   }
+}
+
+function scheduleCallback(callback, delay) {
+  const timeout = window.setTimeout(() => {
+    pendingTimeouts.delete(timeout);
+    callback();
+  }, delay);
+  pendingTimeouts.add(timeout);
+}
+
+function clearPendingCallbacks() {
+  pendingTimeouts.forEach((timeout) => window.clearTimeout(timeout));
+  pendingTimeouts.clear();
 }
 
 function formatDuration(ms) {
@@ -734,10 +831,7 @@ function showRoundMessage() {
     roundOverlayText.textContent = t.roundOverlayTextEncourage || t.roundOverlayText || "We’ll review the tricky ones and improve.";
   }
   roundOverlay.classList.remove("hidden");
-  setTimeout(() => {
-    roundOverlay.classList.add("hidden");
-  }, ROUND_OVERLAY_DURATION);
-  return ROUND_OVERLAY_DURATION;
+  if (roundOverlayContinue) roundOverlayContinue.focus();
 }
 
 const langSelector = document.getElementById("langSelector");
@@ -770,9 +864,11 @@ if (langSelector) langSelector.addEventListener("click", (event) => {
   localStorage.setItem("mathSprintLang", lang);
   langSelector.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.classList.toggle("active", btn === button);
+    btn.setAttribute("aria-pressed", String(btn === button));
   });
   applyTranslations(lang);
   updateFooterVersion();
+  updateMuteUI();
   updateDailyUI();
   focusAnswerInput();
 });
@@ -782,6 +878,9 @@ function setInitialLangButton() {
   if (btn) {
     langSelector.querySelectorAll(".lang-btn").forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
+    langSelector.querySelectorAll(".lang-btn").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b === btn));
+    });
   }
 }
 
@@ -797,6 +896,10 @@ function updateMuteUI() {
   if (!muteToggle) return;
   muteToggle.classList.toggle("muted", isMuted);
   muteToggle.textContent = isMuted ? "🔇" : "🔊";
+  const label = isMuted ? translations[currentLang].soundOff : translations[currentLang].soundOn;
+  muteToggle.setAttribute("aria-label", label);
+  muteToggle.setAttribute("title", label);
+  muteToggle.setAttribute("aria-pressed", String(isMuted));
 }
 
 function renderReview() {
@@ -874,7 +977,7 @@ function focusAnswerInput() {
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js");
+    navigator.serviceWorker.register(`./sw.js?v=${APP_VERSION}`);
   });
 }
 
@@ -966,9 +1069,10 @@ function renderHeatmap() {
   });
 }
 
-function applyAdaptiveDifficulty() {
+function applyAdaptiveDifficulty(completedFirstRound = problemCount) {
   if (!adaptiveEnabled) return;
-  const accuracy = problemCount ? firstTryCorrect / problemCount : 0;
+  if (!completedFirstRound) return;
+  const accuracy = firstTryCorrect / completedFirstRound;
   const avgTime = solvedTimes.length ? solvedTimes.reduce((a,b) => a + b, 0) / solvedTimes.length : 0;
   const steps = [10, 20, 30, 50, 100];
   const idx = steps.indexOf(maxNumber);

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#111d4a" />
+    <meta name="description" content="Confidence-first mental math practice with adaptive sprints and useful progress insights." />
+    <title>Math Sprint 2</title>
+    <link rel="manifest" href="manifest.json" />
+    <link rel="icon" href="../favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent">Skip to content</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Main navigation">
+        <a class="brand" href="#home" aria-label="Math Sprint home">
+          <span class="brand-mark" aria-hidden="true">ϟ</span>
+          <span>Math <strong>Sprint</strong></span>
+          <span class="version-mark">2</span>
+        </a>
+        <nav class="side-nav">
+          <button class="nav-item active" data-view-target="home" aria-current="page">
+            <span aria-hidden="true">⌂</span><span data-i18n="navHome">Dashboard</span>
+          </button>
+          <button class="nav-item" data-view-target="insights">
+            <span aria-hidden="true">▥</span><span data-i18n="navInsights">Insights</span>
+          </button>
+        </nav>
+        <div class="streak-card">
+          <div class="streak-icon" aria-hidden="true">◆</div>
+          <div>
+            <strong id="sideStreak">Start today</strong>
+            <span data-i18n="streakEncouragement">Small wins become strong skills.</span>
+          </div>
+          <div class="streak-track" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        </div>
+      </aside>
+
+      <div class="workspace">
+        <header class="topbar">
+          <a class="old-version-link" href="../">
+            <span aria-hidden="true">↶</span><span data-i18n="backToOld">Back to old version</span>
+          </a>
+          <div class="topbar-actions">
+            <label class="language-control">
+              <span class="sr-only">Language</span>
+              <select id="languageSelect" aria-label="Language">
+                <option value="en">English</option>
+                <option value="lt">Lietuvių</option>
+                <option value="de">Deutsch</option>
+                <option value="ru">Русский</option>
+              </select>
+            </label>
+            <button id="soundToggle" class="icon-button" type="button" aria-pressed="false" aria-label="Mute sound">◖))</button>
+            <div class="learner-chip" title="Progress is stored only in this browser">
+              <span id="learnerInitial">P</span>
+              <div><strong id="learnerName">Player</strong><small data-i18n="localProfile">Local profile</small></div>
+            </div>
+          </div>
+        </header>
+
+        <main id="mainContent">
+          <section id="homeView" class="view" data-view="home">
+            <div class="dashboard-grid">
+              <section class="mission-card" aria-labelledby="missionTitle">
+                <div class="mission-copy">
+                  <p class="mission-kicker" data-i18n="missionKicker">Today’s mission</p>
+                  <h1 id="missionTitle" data-i18n="missionTitle">Make division feel easy.</h1>
+                  <p data-i18n="missionBody">A short confidence sprint connects division to multiplication facts you already know.</p>
+                  <div class="mission-actions">
+                    <button id="smartStartBtn" class="primary-button" type="button">
+                      <span data-i18n="startSmart">Start smart sprint</span><span aria-hidden="true">→</span>
+                    </button>
+                    <button class="text-button" type="button" data-mode="div" data-start-mode>
+                      <span data-i18n="divisionBoost">Division boost</span>
+                    </button>
+                  </div>
+                </div>
+                <div class="mission-visual" aria-hidden="true">
+                  <div class="podium"><i></i><i></i><i></i><i></i></div>
+                  <div class="flag">⚑</div>
+                  <div class="route">× <span>· · ·</span> ÷ <span>· · ·</span> ★</div>
+                </div>
+              </section>
+
+              <section class="setup-card" aria-labelledby="skillsTitle">
+                <div class="section-heading">
+                  <div><span class="eyebrow" data-i18n="quickSetup">Quick setup</span><h2 id="skillsTitle" data-i18n="chooseSkill">Choose a focus</h2></div>
+                  <span id="recommendationLabel" class="recommendation-label" data-i18n="recommended">Recommended</span>
+                </div>
+                <div id="skillSelector" class="skill-selector" role="group" aria-label="Practice focus">
+                  <button class="skill-button" type="button" data-skill="smart" aria-pressed="true"><b>✦</b><span data-i18n="smartMix">Smart mix</span></button>
+                  <button class="skill-button" type="button" data-skill="add" aria-pressed="false"><b>＋</b><span data-i18n="addition">Addition</span></button>
+                  <button class="skill-button" type="button" data-skill="sub" aria-pressed="false"><b>−</b><span data-i18n="subtraction">Subtraction</span></button>
+                  <button class="skill-button" type="button" data-skill="mul" aria-pressed="false"><b>×</b><span data-i18n="multiplication">Multiplication</span></button>
+                  <button class="skill-button division" type="button" data-skill="div" aria-pressed="false"><b>÷</b><span data-i18n="division">Division</span></button>
+                </div>
+                <div class="length-control">
+                  <span data-i18n="sessionLength">Session length</span>
+                  <div id="lengthSelector" class="segmented" role="group" aria-label="Problems per session">
+                    <button type="button" data-length="6" aria-pressed="false">6</button>
+                    <button type="button" data-length="10" aria-pressed="true">10</button>
+                    <button type="button" data-length="15" aria-pressed="false">15</button>
+                  </div>
+                </div>
+              </section>
+
+              <section class="focus-card" aria-labelledby="focusTitle">
+                <div class="section-heading compact"><h2 id="focusTitle" data-i18n="recommendedForYou">Recommended for you</h2><span aria-hidden="true">◎</span></div>
+                <div class="focus-symbol" aria-hidden="true">÷</div>
+                <h3 id="focusName" data-i18n="focusDivision">Division confidence</h3>
+                <p id="focusReason" data-i18n="focusReason">Start with friendly 2, 5 and 10 facts, then level up when they feel easy.</p>
+                <button class="secondary-button" type="button" data-mode="div" data-start-mode><span data-i18n="practiceDivision">Practice division</span><span aria-hidden="true">→</span></button>
+              </section>
+
+              <section class="weekly-card" aria-labelledby="weeklyTitle">
+                <div class="section-heading">
+                  <div><span class="eyebrow" data-i18n="lastSevenDays">Last 7 days</span><h2 id="weeklyTitle" data-i18n="weeklyProgress">Weekly progress</h2></div>
+                  <div class="chart-legend"><span><i class="violet"></i><span data-i18n="questions">Questions</span></span><span><i class="mint"></i><span data-i18n="accuracy">Accuracy</span></span></div>
+                </div>
+                <div id="weeklyChart" class="weekly-chart" role="img" aria-label="Questions completed during the last seven days"></div>
+              </section>
+
+              <section class="metrics-column" aria-label="Learning metrics">
+                <article class="metric-card"><div><span data-i18n="mastery">Mastery</span><strong id="masteryMetric">0%</strong></div><p id="masteryText" data-i18n="masteryEmpty">Complete a sprint to map your skills.</p></article>
+                <article class="metric-card"><div><span data-i18n="accuracy">Accuracy</span><strong id="accuracyMetric">—</strong></div><p id="accuracyText" data-i18n="accuracyEmpty">First-try accuracy will appear here.</p></article>
+                <article class="metric-card"><div><span data-i18n="speed">Steady pace</span><strong id="speedMetric">—</strong></div><p data-i18n="speedNote">Median answer time, not a pressure timer.</p></article>
+              </section>
+
+              <section class="goal-strip" aria-label="Daily progress">
+                <div class="goal-streak"><span aria-hidden="true">◆</span><div><strong id="dailyStreak">Day one</strong><small data-i18n="keepMomentum">Build momentum, one sprint at a time.</small></div></div>
+                <div class="goal-progress"><div><strong data-i18n="dailyGoal">Daily goal</strong><span id="dailyGoalText">0 / 15</span></div><div class="goal-bar"><i id="dailyGoalBar"></i></div></div>
+                <div class="best-score"><span aria-hidden="true">★</span><div><strong id="bestScore">No score yet</strong><small data-i18n="personalBest">Your personal best</small></div></div>
+                <button class="insights-link" type="button" data-view-target="insights"><span aria-hidden="true">▥</span><span><strong data-i18n="insights">Insights</strong><small data-i18n="insightsHint">See what is getting easier</small></span><b aria-hidden="true">›</b></button>
+              </section>
+            </div>
+          </section>
+
+          <section id="practiceView" class="view hidden" data-view="practice" aria-labelledby="practiceTitle">
+            <div class="practice-shell">
+              <header class="practice-header">
+                <button id="leavePracticeBtn" class="icon-button" type="button" aria-label="Leave sprint">←</button>
+                <div class="practice-progress"><div><span id="practiceTitle" data-i18n="smartSprint">Smart sprint</span><strong id="practiceCounter">1 / 10</strong></div><div class="goal-bar"><i id="practiceProgressBar"></i></div></div>
+                <div class="score-chip"><span data-i18n="score">Score</span><strong id="liveScore">0</strong></div>
+              </header>
+              <div class="practice-layout">
+                <aside class="race-panel">
+                  <span class="eyebrow" data-i18n="beatYourBest">Beat your best</span>
+                  <strong id="targetScore">—</strong>
+                  <p data-i18n="raceHint">Accuracy and brave corrections matter most.</p>
+                  <div class="race-track" aria-hidden="true"><i id="raceProgress"></i><span>⚑</span></div>
+                  <div class="session-streak"><span data-i18n="answerStreak">Answer streak</span><strong id="answerStreak">0</strong></div>
+                </aside>
+                <article class="problem-stage">
+                  <div class="confidence-line" id="confidenceLine" data-i18n="youCanDoThis">You can do this.</div>
+                  <div id="problemExpression" class="problem-expression" aria-live="polite">20 ÷ 4</div>
+                  <form id="answerForm" class="answer-form" autocomplete="off">
+                    <label for="answerInput" data-i18n="yourAnswer">Your answer</label>
+                    <input id="answerInput" inputmode="numeric" pattern="[0-9]*" maxlength="4" aria-describedby="feedbackMessage hintPanel" />
+                    <button class="primary-button" type="submit" data-i18n="checkAnswer">Check answer</button>
+                  </form>
+                  <div id="feedbackMessage" class="feedback-message" role="status" aria-live="polite"></div>
+                  <div id="hintPanel" class="hint-panel hidden" role="status">
+                    <span class="hint-icon" aria-hidden="true">↔</span>
+                    <div><strong data-i18n="useWhatYouKnow">Use what you know</strong><p id="hintText"></p><div id="hintVisual" class="hint-visual" aria-hidden="true"></div></div>
+                  </div>
+                  <div id="numberPad" class="number-pad" aria-label="Number pad">
+                    <button type="button" data-number="1">1</button><button type="button" data-number="2">2</button><button type="button" data-number="3">3</button>
+                    <button type="button" data-number="4">4</button><button type="button" data-number="5">5</button><button type="button" data-number="6">6</button>
+                    <button type="button" data-number="7">7</button><button type="button" data-number="8">8</button><button type="button" data-number="9">9</button>
+                    <button type="button" data-action="clear" aria-label="Clear answer">C</button><button type="button" data-number="0">0</button><button type="button" data-action="backspace" aria-label="Delete last digit">⌫</button>
+                  </div>
+                </article>
+              </div>
+            </div>
+          </section>
+
+          <section id="summaryView" class="view hidden" data-view="summary" aria-labelledby="summaryTitle">
+            <div class="summary-shell">
+              <div id="summaryCelebration" class="summary-celebration" aria-hidden="true">★</div>
+              <span class="eyebrow" data-i18n="sprintComplete">Sprint complete</span>
+              <h1 id="summaryTitle" data-i18n="summaryTitle">That got easier.</h1>
+              <p id="summaryMessage" data-i18n="summaryMessage">You practiced, corrected, and made your brain faster.</p>
+              <div class="summary-score"><span data-i18n="score">Score</span><strong id="summaryScore">0</strong><small id="bestScoreMessage"></small></div>
+              <div class="summary-metrics">
+                <article><span data-i18n="firstTry">First try</span><strong id="summaryAccuracy">0%</strong></article>
+                <article><span data-i18n="braveCorrections">Brave corrections</span><strong id="summaryCorrections">0</strong></article>
+                <article><span data-i18n="steadyPace">Steady pace</span><strong id="summaryPace">—</strong></article>
+                <article><span data-i18n="xpEarned">XP earned</span><strong id="summaryXp">+0</strong></article>
+              </div>
+              <div class="summary-actions"><button id="playAgainBtn" class="primary-button" type="button" data-i18n="playAgain">Play again</button><button class="secondary-button" type="button" data-view-target="insights" data-i18n="seeInsights">See insights</button><button class="text-button" type="button" data-view-target="home" data-i18n="backHome">Back home</button></div>
+            </div>
+          </section>
+
+          <section id="insightsView" class="view hidden" data-view="insights" aria-labelledby="insightsTitle">
+            <div class="insights-header"><div><span class="eyebrow" data-i18n="parentView">Learning overview</span><h1 id="insightsTitle" data-i18n="insightsTitle">Progress that explains itself</h1><p data-i18n="insightsBody">See accuracy, corrections, pace and mastery separately.</p></div><button class="secondary-button" type="button" data-view-target="home" data-i18n="backDashboard">Back to dashboard</button></div>
+            <div class="insights-grid">
+              <section class="insight-panel wide"><div class="section-heading"><h2 data-i18n="skillMastery">Skill mastery</h2><span id="insightSessionCount">0 sessions</span></div><div id="skillMasteryList" class="mastery-list"></div></section>
+              <section class="insight-panel"><h2 data-i18n="whatNext">What to practice next</h2><div id="nextPracticeCard" class="next-practice-card"></div></section>
+              <section class="insight-panel wide"><div class="section-heading"><h2 data-i18n="recentSprints">Recent sprints</h2><span data-i18n="storedLocally">Stored only on this device</span></div><div id="recentSessions" class="recent-sessions"></div></section>
+              <section class="insight-panel"><h2 data-i18n="dataTools">Data tools</h2><p data-i18n="dataToolsBody">Download a private JSON report for safekeeping or deeper analysis.</p><button id="exportBtn" class="secondary-button" type="button" data-i18n="downloadReport">Download report</button></section>
+            </div>
+          </section>
+        </main>
+      </div>
+    </div>
+
+    <div id="leaveDialog" class="dialog-backdrop hidden" role="dialog" aria-modal="true" aria-labelledby="leaveTitle">
+      <div class="dialog-card"><h2 id="leaveTitle" data-i18n="leaveTitle">Leave this sprint?</h2><p data-i18n="leaveBody">Completed answers will still count, but the sprint score will not.</p><div><button id="cancelLeaveBtn" class="secondary-button" type="button" data-i18n="keepGoing">Keep going</button><button id="confirmLeaveBtn" class="danger-button" type="button" data-i18n="leaveSprint">Leave sprint</button></div></div>
+    </div>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

@@ -61,43 +61,59 @@ export function computeAnswer(op, a, b) {
   return operations[op].solve(a, b);
 }
 
+function makeProblem(max, ops) {
+  let a = 0;
+  let b = 0;
+  const op = ops[randomInt(0, ops.length - 1)];
+
+  if (op === "add") {
+    a = randomInt(1, Math.max(1, max - 1));
+    b = randomInt(1, max - a);
+  } else if (op === "sub") {
+    a = randomInt(1, max);
+    b = randomInt(1, a);
+  } else if (op === "mul") {
+    const pair = pickMultiplicationPair(max);
+    a = pair.a;
+    b = pair.b;
+  } else if (op === "div") {
+    const pair = pickDivisionPair(max);
+    a = pair.a;
+    b = pair.b;
+  }
+
+  return { a, b, op };
+}
+
+function findDifferentAnswerProblem(max, ops, lastAnswer) {
+  for (const op of ops) {
+    for (let a = 1; a <= max; a += 1) {
+      for (let b = 1; b <= max; b += 1) {
+        if ((op === "add" && a + b > max) || (op === "sub" && b > a)) continue;
+        if (op === "mul" && a * b > max) continue;
+        if (op === "div" && (a % b !== 0 || a / b > max)) continue;
+        if (computeAnswer(op, a, b) !== lastAnswer) return { a, b, op };
+      }
+    }
+  }
+  return null;
+}
+
 export function buildProblems(count, max, ops) {
   const problems = [];
   let lastAnswer = null;
   for (let i = 0; i < count; i += 1) {
-    let a = 0;
-    let b = 0;
-    let op = ops[randomInt(0, ops.length - 1)];
-    let answer = null;
-
-    for (let attempt = 0; attempt < 6; attempt += 1) {
-      op = ops[randomInt(0, ops.length - 1)];
-      if (op === "add") {
-        a = randomInt(1, Math.max(1, max - 1));
-        b = randomInt(1, max - a);
-      } else if (op === "sub") {
-        a = randomInt(1, max);
-        b = randomInt(1, a);
-      } else if (op === "mul") {
-        const pair = pickMultiplicationPair(max);
-        a = pair.a;
-        b = pair.b;
-      } else if (op === "div") {
-        const pair = pickDivisionPair(max);
-        a = pair.a;
-        b = pair.b;
-      }
-
-      answer = computeAnswer(op, a, b);
-      if (answer !== lastAnswer) break;
+    let problem = makeProblem(max, ops);
+    for (let attempt = 0; attempt < 20 && computeAnswer(problem.op, problem.a, problem.b) === lastAnswer; attempt += 1) {
+      problem = makeProblem(max, ops);
     }
-
-    lastAnswer = answer;
+    if (computeAnswer(problem.op, problem.a, problem.b) === lastAnswer) {
+      problem = findDifferentAnswerProblem(max, ops, lastAnswer) || problem;
+    }
+    lastAnswer = computeAnswer(problem.op, problem.a, problem.b);
 
     problems.push({
-      a,
-      b,
-      op,
+      ...problem,
       firstAttempted: false,
       solved: false,
       startTimestamp: null,
