@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.0.4] - 2026-08-21
+### Fixed
+- Answer input immediately regains focus after every V2 submission so the mobile numeric keyboard stays open between problems.
+
 ## [2.0.3] - 2026-08-21
 ### Added
 - Parallel confidence-first V2 at `/v2/`, with direct switching to and from V1.

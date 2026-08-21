@@ -12,7 +12,7 @@ import {
   selectAdaptiveProblems,
 } from "./logic.js";
 
-const APP_VERSION = "2.0.3";
+const APP_VERSION = "2.0.4";
 const STORAGE_KEY = "mathSprintV2:data";
 const DAILY_GOAL = 15;
 const FEEDBACK_DELAY = 650;
@@ -287,11 +287,17 @@ function renderProblem() {
   elements.feedbackMessage.className = "feedback-message";
   elements.hintPanel.classList.add("hidden");
   elements.confidenceLine.textContent = translate(session.index < 2 ? "youCanDoThis" : "beatYourBest");
-  elements.answerInput.focus();
+  focusAnswerInput();
+}
+
+function focusAnswerInput() {
+  window.setTimeout(() => elements.answerInput.focus({ preventScroll: true }), 0);
 }
 
 function submitAnswer(event) {
   event.preventDefault();
+  // Restore focus within the submit gesture so mobile keyboards remain open.
+  focusAnswerInput();
   if (!session || session.advancing) return;
   const raw = elements.answerInput.value.replace(/\D+/g, "");
   if (!raw) { setFeedback(translate("answerNeeded"), "error"); return; }
@@ -443,7 +449,7 @@ elements.numberPad.addEventListener("click", (event) => {
   if (button.dataset.number) elements.answerInput.value = `${elements.answerInput.value}${button.dataset.number}`.slice(0, 4);
   if (button.dataset.action === "clear") elements.answerInput.value = "";
   if (button.dataset.action === "backspace") elements.answerInput.value = elements.answerInput.value.slice(0, -1);
-  elements.answerInput.focus();
+  focusAnswerInput();
 });
 elements.leavePracticeBtn.addEventListener("click", () => elements.leaveDialog.classList.remove("hidden"));
 elements.cancelLeaveBtn.addEventListener("click", () => elements.leaveDialog.classList.add("hidden"));
