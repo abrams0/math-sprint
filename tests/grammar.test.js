@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { CATEGORIES, EXAMPLES, dictionaryUrl, parseDictionary, loadWords, buildDeck, createSession, answerSession } from "../grammar/logic.js";
+import { CATEGORIES, EXAMPLES, dictionaryUrls, parseDictionary, loadWords, buildDeck, createSession, answerSession } from "../grammar/logic.js";
 import { translations, translate } from "../grammar/i18n.js";
 
 function row(word, id, lexeme = "L100") {
@@ -13,9 +13,35 @@ const fixture = response([
 ]);
 const words = parseDictionary(fixture);
 assert.equal(words.length, 36);
-assert.equal(new URL(dictionaryUrl()).hostname, "query.wikidata.org");
-assert.match(new URL(dictionaryUrl()).searchParams.get("query"), /Q188/);
-assert.equal(Object.keys(EXAMPLES).length, 72);
+assert.equal(Object.keys(EXAMPLES).length, 360);
+const urls = dictionaryUrls();
+assert.equal(urls.length, 6);
+const requestedWords = [];
+for (const url of urls) {
+  assert.equal(new URL(url).hostname, "query.wikidata.org");
+  assert(url.length < 4000, "Dictionary GET request is too long");
+  const query = new URL(url).searchParams.get("query");
+  assert.match(query, /Q188/);
+  const batch = [...query.matchAll(/"([^"\n]+)"@de/g)].map(match => match[1]);
+  assert.equal(batch.length, 60);
+  requestedWords.push(...batch);
+}
+assert.deepEqual(requestedWords, Object.keys(EXAMPLES));
+for (const [word, example] of Object.entries(EXAMPLES)) {
+  assert(example.includes(word), `Missing target word in example: ${word}`);
+  assert(/[.!?]$/.test(example), `Unfinished example: ${word}`);
+}
+for (const word of ["Freundschaft", "Verantwortung", "beobachten", "vergleichen", "zuverlässig", "ungewöhnlich"]) {
+  assert(Object.hasOwn(EXAMPLES, word), `Missing more challenging vocabulary: ${word}`);
+}
+const challenging = parseDictionary(response([
+  row("Freundschaft", "Q1084"), row("Verantwortung", "Q1084"),
+  row("beobachten", "Q24905"), row("vergleichen", "Q24905"),
+  row("zuverlässig", "Q34698"), row("ungewöhnlich", "Q34698"),
+]));
+assert.equal(challenging.length, 6);
+assert.deepEqual(challenging.map(word => word.category), ["Nomen", "Nomen", "Verb", "Verb", "Adjektiv", "Adjektiv"]);
+assert(challenging.every(word => word.example === EXAMPLES[word.word]));
 assert.throws(() => parseDictionary({}), /Invalid dictionary/);
 assert.deepEqual(parseDictionary(response([row("Hund", "Q1084"), row("Hund", "Q24905")])), []);
 assert.deepEqual(parseDictionary(response([row("Hund", "Q1084"), row("Hund", "Q999999")])), []);
@@ -55,11 +81,20 @@ assert.equal(perfect.round, 1);
 assert.equal(perfect.firstCorrect, 1);
 assert.throws(() => answerSession(createSession([words[0]]), "Other"));
 assert.throws(() => createSession([]));
-assert.deepEqual(await loadWords(async (_url, options) => {
+let fetchCount = 0;
+assert.deepEqual(await loadWords(async (url, options) => {
+  assert.equal(url, urls[fetchCount++]);
   assert.equal(options.credentials, "omit");
   assert.equal(options.cache, "no-store");
   return { ok: true, json: async () => fixture };
 }), words);
+assert.equal(fetchCount, urls.length);
+let partialRequests = 0;
+await assert.rejects(loadWords(async () => {
+  if (++partialRequests === 2) return {ok: false, status: 503};
+  return {ok: true, json: async () => fixture};
+}), /HTTP 503/);
+assert.equal(partialRequests, 2, "Stop loading after a failed batch");
 await assert.rejects(loadWords(async () => ({ok: false, status: 429})), /HTTP 429/);
 await assert.rejects(loadWords(async () => ({ok: true, json: async () => response([])})), /Not enough/);
 await assert.rejects(loadWords(async () => {throw new Error("Offline");}), /Offline/);

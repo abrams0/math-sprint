@@ -18,7 +18,7 @@ V2 is designed around confidence-first practice:
 - Progress can be exported as a private JSON report.
 - The complete V2 interface is available in English, Lithuanian, German, and Russian.
 
-## German Grammar (2.1.0)
+## German Grammar (2.1.1)
 
 Open **Deutsch · Wortarten** from either math home screen, or visit `/grammar/`.
 - Choose 10, 20 or 30 words. Answer with **1 = Nomen**, **2 = Verb**, **3 = Adjektiv**; no Enter or mouse needed. The same buttons work on touchscreens.
@@ -27,7 +27,9 @@ Open **Deutsch · Wortarten** from either math home screen, or visit `/grammar/`
 - The summary shows first-try accuracy, total elapsed time (including feedback/review pauses until the final answer), and the number of corrected words.
 - Instructions are available in EN/LT/DE/RU; vocabulary, examples and category names remain German. German capitalization is intentionally preserved as a learning clue.
 - Classifications load from the [Wikidata Query Service](https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service) ([lexical categories](https://www.wikidata.org/wiki/Wikidata:Lexicographical_data/Documentation/Lexical_categories), [CC0 data](https://www.wikidata.org/wiki/Wikidata:Data_access)). No API key or backend is needed.
-- `grammar/logic.js` contains a 72-word child-friendly allowlist and locally written example sentences, **not** a classified fallback deck. The API supplies categories; duplicate lexemes are merged and ambiguous, invalid, unsupported or missing classifications are excluded. At least ten words of each class are required.
+- `grammar/logic.js` contains a 360-word allowlist mixing familiar and more challenging third-grade vocabulary and locally written example sentences, **not** a classified fallback deck. The API supplies categories; duplicate lexemes are merged and ambiguous, invalid, unsupported or missing classifications are excluded. At least ten words of each class are required.
+- The candidate list includes animals, everyday objects, actions, descriptive words and third-grade vocabulary such as Freundschaft, Verantwortung, beobachten, vergleichen and zuverlässig. Each has a German example sentence. The displayed count reflects the usable words returned by the dictionary, not a fixed limit or session length.
+- Dictionary queries are split into six sequential batches of 60 candidates to avoid oversized URLs and request bursts. A failed batch rejects the whole load; no partial deck is presented.
 - Online loading is required on every page load. HTTP errors, timeouts or insufficient data show a Retry button, not guessed answers or an offline fallback. The loaded words are kept in memory for replay; no dictionary or grammar results are persisted.
 - Only the vocabulary query is sent to Wikidata. Answers and learner information are not sent; the dictionary service receives normal network metadata such as IP address. Math statistics are unchanged.
 - Translations live separately in `grammar/i18n.js`. The grammar section has no service worker; existing math offline support is unchanged.
@@ -55,7 +57,7 @@ Open **Deutsch · Wortarten** from either math home screen, or visit `/grammar/`
 3. Answer using the keyboard or the on-screen Check button.
 
 ## Versioning
-This project uses semantic versioning: `MAJOR.MINOR.PATCH`. Package/V2/grammar release: **2.1.0**; original math app: **1.9.0**. Each app has its own `APP_VERSION` for cache-busting.
+This project uses semantic versioning: `MAJOR.MINOR.PATCH`. Package/grammar release: **2.1.1**; V2: **2.1.0**; original math app: **1.9.0**. Each app has its own `APP_VERSION` for cache-busting.
 
 ## Development
 Run commands from the app folder (where `package.json` lives).

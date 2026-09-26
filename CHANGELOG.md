@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.1.1] - 2026-09-26
+### Changed
+- Expanded German grammar vocabulary from 72 to 360 candidates with example sentences, mixing familiar words with more challenging third-grade vocabulary.
+- Load live classifications in six small sequential requests while retaining ambiguity filtering, a shared timeout and all-or-nothing loading.
+- Added tests for complete query coverage, URL lengths, example sentences, challenging vocabulary and mid-load failures.
+
 ## [2.1.0] - 2026-09-26
 ### Added
 - German word-class practice at `/grammar/`, linked from both math versions (V1 1.9.0, V2 2.1.0).
