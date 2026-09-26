@@ -1,10 +1,10 @@
 {
   "name": "math-sprint",
-  "version": "2.1.1",
+  "version": "2.2.0",
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node tests/logic.test.js && node tests/v2-logic.test.js && node tests/grammar.test.js && node tests/build.test.js",
+    "test": "node tests/logic.test.js && node tests/v2-logic.test.js && node tests/grammar.test.js && node tests/grammar-history.test.js && node tests/build.test.js",
     "lint": "node scripts/lint.js",
     "build": "node scripts/build.js"
   }

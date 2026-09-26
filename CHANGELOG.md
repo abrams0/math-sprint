@@ -1,5 +1,14 @@
 # Changelog
 
+## [2.2.0] - 2026-09-26
+### Added
+- Grammar results-history graph matching the approved soft-wave concept: latest 20 completed lessons, first-try percentages, 0/50/100% guides, thin stems, dots, smooth curve and gradient fill.
+- Device-local history with completion-time saving, duplicate prevention, oldest-to-newest ordering, storage-failure warnings, and an accessible dated results table.
+- Responsive SVG chart without external dependencies, EN/LT/DE/RU labels, empty/single-result handling and history/geometry regression tests.
+
+### Changed
+- Grammar build includes the cache-busted history module; README documents persistence limits and that earlier unsaved lessons cannot be recovered.
+
 ## [2.1.1] - 2026-09-26
 ### Changed
 - Expanded German grammar vocabulary from 72 to 360 candidates with example sentences, mixing familiar words with more challenging third-grade vocabulary.

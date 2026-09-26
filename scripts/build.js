@@ -82,7 +82,7 @@ function buildApp(relativeDir, cachePrefix, onlineOnly = false) {
   }
   mkdirSync(outputDir, { recursive: true });
   const files = ["index.html", "styles.css", "app.js", "logic.js"];
-  files.push(...(onlineOnly ? ["i18n.js"] : ["manifest.json", "sw.js"]));
+  files.push(...(onlineOnly ? ["i18n.js", "history.js"] : ["manifest.json", "sw.js"]));
   copyFiles(appDir, outputDir, files);
   copyFiles(rootDir, outputDir, sharedIcons);
   const version = readVersion(appDir);
@@ -93,7 +93,7 @@ function buildApp(relativeDir, cachePrefix, onlineOnly = false) {
   if (existsSync(appPath)) {
     const builtApp = readFileSync(appPath, "utf8")
       .replace(/(["'])\.\/sw\.js\1/g, `$1./sw.js?v=${version}$1`)
-      .replace(/from (["'])\.\/(logic|i18n)\.js\1/g, `from $1./$2.js?v=${version}$1`);
+      .replace(/from (["'])\.\/(logic|i18n|history)\.js\1/g, `from $1./$2.js?v=${version}$1`);
     writeFileSync(appPath, builtApp);
   }
   writeServiceWorker(outputDir, version, cachePrefix);

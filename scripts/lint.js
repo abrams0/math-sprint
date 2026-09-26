@@ -15,6 +15,8 @@ const files = [
   "grammar/app.js",
   "grammar/logic.js",
   "grammar/i18n.js",
+  "grammar/history.js",
+  "tests/grammar-history.test.js",
   "tests/grammar.test.js",
 ];
 
