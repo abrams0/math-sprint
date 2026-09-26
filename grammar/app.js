@@ -1,7 +1,7 @@
-import { CATEGORIES, loadWords, buildDeck, createSession, answerSession } from "./logic.js?v=2.1.0";
-import { translations, translate } from "./i18n.js?v=2.1.0";
+import { CATEGORIES, loadWords, buildDeck, createSession, answerSession } from "./logic.js?v=2.1.1";
+import { translations, translate } from "./i18n.js?v=2.1.1";
 
-const APP_VERSION = "2.1.0";
+const APP_VERSION = "2.1.1";
 const $ = (id) => document.getElementById(id);
 const choices = [...document.querySelectorAll("[data-category]")];
 const hintKeys = { Nomen: "nounHint", Verb: "verbHint", Adjektiv: "adjectiveHint" };
