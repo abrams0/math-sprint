@@ -12,7 +12,7 @@ import {
   selectAdaptiveProblems,
 } from "./logic.js";
 
-const APP_VERSION = "2.0.4";
+const APP_VERSION = "2.1.0";
 const STORAGE_KEY = "mathSprintV2:data";
 const DAILY_GOAL = 15;
 const FEEDBACK_DELAY = 650;

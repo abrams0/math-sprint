@@ -56,4 +56,16 @@ if (existsSync(join(rootDir, "v2", "index.html"))) {
   }
 }
 
+const grammarDir = join(distDir, "grammar");
+for (const file of ["index.html", "styles.css", "app.js", "logic.js", "i18n.js", "favicon.svg"]) {
+  assert(existsSync(join(grammarDir, file)), `grammar: missing ${file}`);
+}
+assert(!existsSync(join(grammarDir, "sw.js")), "Grammar must remain online-only");
+const grammarHtml = readFileSync(join(grammarDir, "index.html"), "utf8");
+const grammarApp = readFileSync(join(grammarDir, "app.js"), "utf8");
+for (const asset of assetUrls(grammarHtml)) assert(existsSync(join(grammarDir, asset.split("?")[0])), `grammar: missing ${asset}`);
+const grammarVersion = grammarApp.match(/APP_VERSION = "([^"]+)"/)[1];
+for (const name of ["logic", "i18n"]) assert(grammarApp.includes(`./${name}.js?v=${grammarVersion}`), `grammar: ${name} import not versioned`);
+assert(readFileSync(join(distDir, "index.html"), "utf8").includes('./grammar/'), "V1 grammar link missing");
+assert(readFileSync(join(distDir, "v2/index.html"), "utf8").includes('../grammar/'), "V2 grammar link missing");
 console.log("Build artifact tests passed.");

@@ -49,7 +49,7 @@ const streakValue = document.getElementById("streakValue");
 const dailyStatusValue = document.getElementById("dailyStatusValue");
 const muteToggle = document.getElementById("muteToggle");
 
-const APP_VERSION = "1.8.3";
+const APP_VERSION = "1.9.0";
 const DAILY_GOAL = 20;
 const STATS_KEY = "mathSprintStats";
 const DECK_KEY = "mathSprintDeck";

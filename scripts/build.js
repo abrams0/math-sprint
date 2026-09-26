@@ -73,7 +73,7 @@ function writeServiceWorker(outputDir, version, cachePrefix) {
   writeFileSync(swPath, serviceWorker);
 }
 
-function buildApp(relativeDir, cachePrefix) {
+function buildApp(relativeDir, cachePrefix, onlineOnly = false) {
   const appDir = join(rootDir, relativeDir);
   const outputDir = join(distDir, relativeDir);
   if (!existsSync(join(appDir, "index.html"))) {
@@ -81,17 +81,19 @@ function buildApp(relativeDir, cachePrefix) {
     return;
   }
   mkdirSync(outputDir, { recursive: true });
-  copyFiles(appDir, outputDir, ["index.html", "styles.css", "app.js", "logic.js", "manifest.json", "sw.js"]);
+  const files = ["index.html", "styles.css", "app.js", "logic.js"];
+  files.push(...(onlineOnly ? ["i18n.js"] : ["manifest.json", "sw.js"]));
+  copyFiles(appDir, outputDir, files);
   copyFiles(rootDir, outputDir, sharedIcons);
   const version = readVersion(appDir);
   const indexPath = join(outputDir, "index.html");
   writeFileSync(indexPath, cacheBustHtml(readFileSync(indexPath, "utf8"), version));
-  cacheBustManifest(join(outputDir, "manifest.json"), version);
+  if (!onlineOnly) cacheBustManifest(join(outputDir, "manifest.json"), version);
   const appPath = join(outputDir, "app.js");
   if (existsSync(appPath)) {
     const builtApp = readFileSync(appPath, "utf8")
       .replace(/(["'])\.\/sw\.js\1/g, `$1./sw.js?v=${version}$1`)
-      .replace(/from (["'])\.\/logic\.js\1/g, `from $1./logic.js?v=${version}$1`);
+      .replace(/from (["'])\.\/(logic|i18n)\.js\1/g, `from $1./$2.js?v=${version}$1`);
     writeFileSync(appPath, builtApp);
   }
   writeServiceWorker(outputDir, version, cachePrefix);
@@ -101,6 +103,7 @@ rmSync(distDir, { recursive: true, force: true });
 mkdirSync(distDir, { recursive: true });
 buildApp(".", "math-sprint-v1");
 buildApp("v2", "math-sprint-v2");
+buildApp("grammar", "math-sprint-grammar", true);
 copyFiles(rootDir, distDir, ["CNAME"]);
 
 console.log("Build complete: dist");

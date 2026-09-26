@@ -1,5 +1,16 @@
 # Changelog
 
+## [2.1.0] - 2026-09-26
+### Added
+- German word-class practice at `/grammar/`, linked from both math versions (V1 1.9.0, V2 2.1.0).
+- Keyboard shortcuts 1 = Nomen, 2 = Verb, 3 = Adjektiv, plus touch-friendly answer buttons.
+- Live Wikidata classifications restricted to 72 child-friendly candidate words; ambiguous or unsupported classes are excluded. No offline word fallback; loading failures offer a retry.
+- Balanced 10/20/30-word sessions, explanatory feedback with German example sentences, missed-word review rounds, and first-try accuracy/time/correction summaries.
+- EN/LT/DE/RU instructions, accessible focus and feedback, responsive layouts, isolated grammar tests and versioned deployment assets.
+
+### Changed
+- The root math service worker leaves grammar and third-party API requests to the network. Existing math practice and progress remain separate.
+
 ## [2.0.4] - 2026-08-21
 ### Fixed
 - Answer input immediately regains focus after every V2 submission so the mobile numeric keyboard stays open between problems.

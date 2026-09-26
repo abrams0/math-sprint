@@ -12,6 +12,10 @@ const files = [
   "v2/app.js",
   "v2/logic.js",
   "v2/sw.js",
+  "grammar/app.js",
+  "grammar/logic.js",
+  "grammar/i18n.js",
+  "tests/grammar.test.js",
 ];
 
 for (const file of files) {

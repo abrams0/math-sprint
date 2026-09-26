@@ -29,7 +29,8 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
-  if (new URL(event.request.url).pathname.includes("/v2/")) return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || /\/(v2|grammar)\//.test(url.pathname)) return;
   event.respondWith(
     fetch(event.request)
       .then((response) => response)
