@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wortarten · Math Sprint</title>
+  <meta name="description" content="Practice German nouns, verbs and adjectives with quick keyboard or touch answers.">
+  <link rel="icon" href="favicon.svg?v=2.1.0" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.0">
+  <link rel="stylesheet" href="styles.css?v=2.1.0">
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="skip">Skip to practice</a>
+  <div class="shell">
+    <header class="header">
+      <a class="brand" href="../"><img src="favicon.svg?v=2.1.0" width="48" height="48" alt=""><span>Math Sprint<strong lang="de">Wortarten</strong></span></a>
+      <div class="header-tools">
+        <a id="backMath" href="../" data-i18n="backMath">Back to math</a>
+        <label><span class="sr-only" data-i18n="language">Language</span><select id="language"><option value="en">English</option><option value="lt">Lietuvių</option><option value="de">Deutsch</option><option value="ru">Русский</option></select></label>
+      </div>
+    </header>
+    <main id="main">
+      <section id="setup" class="panel">
+        <p class="eyebrow" data-i18n="subtitle">Little words. Big discoveries.</p>
+        <h1 data-i18n="heading">What kind of word is it?</h1>
+        <p class="intro" data-i18n="intro">Meet a German word, then choose its word class. Press 1, 2 or 3 — or tap a button.</p>
+        <div class="guide">
+          <article><h2 lang="de"><kbd>1</kbd> Nomen</h2><p data-i18n="nounHint"></p><span lang="de">Hund · Buch · Sonne</span></article>
+          <article><h2 lang="de"><kbd>2</kbd> Verb</h2><p data-i18n="verbHint"></p><span lang="de">spielen · lesen · lachen</span></article>
+          <article><h2 lang="de"><kbd>3</kbd> Adjektiv</h2><p data-i18n="adjectiveHint"></p><span lang="de">klein · weich · mutig</span></article>
+        </div>
+        <fieldset><legend data-i18n="length">Words per session</legend><div class="length-options"><button type="button" data-count="10" aria-pressed="true">10</button><button type="button" data-count="20" aria-pressed="false">20</button><button type="button" data-count="30" aria-pressed="false">30</button></div></fieldset>
+        <p id="loadStatus" role="status" aria-live="polite"></p>
+        <button id="retryLoad" class="secondary" type="button" data-i18n="retry" hidden>Try loading again</button>
+        <button id="start" class="primary" type="button" data-i18n="start" disabled>Let's practice</button>
+      </section>
+      <section id="practice" class="panel practice" hidden aria-labelledby="word">
+        <div class="session-top"><p id="roundLabel"></p><button id="end" class="text-button" type="button" data-i18n="end">End session</button></div>
+        <progress id="progress" max="10" value="0"></progress>
+        <p class="eyebrow" data-i18n="prompt">Choose the word class</p>
+        <h1 id="word" class="word" lang="de" tabindex="-1"></h1>
+        <div class="choices" role="group" aria-label="Nomen, Verb, Adjektiv" lang="de">
+          <button type="button" data-category="Nomen" aria-keyshortcuts="1"><kbd>1</kbd><span>Nomen</span></button>
+          <button type="button" data-category="Verb" aria-keyshortcuts="2"><kbd>2</kbd><span>Verb</span></button>
+          <button type="button" data-category="Adjektiv" aria-keyshortcuts="3"><kbd>3</kbd><span>Adjektiv</span></button>
+        </div>
+        <p class="keyboard-hint" data-i18n="keyboard">Press 1, 2 or 3. No Enter needed.</p>
+        <div id="feedback" class="feedback" role="status" aria-live="polite" aria-atomic="true"><strong id="feedbackTitle"></strong><p id="feedbackHint"></p><p id="example" lang="de"></p></div>
+        <a id="sourceWord" target="_blank" rel="noopener noreferrer" data-i18n="sourceWord" hidden>Dictionary entry</a>
+      </section>
+      <section id="review" class="panel interlude" hidden>
+        <p class="eyebrow" lang="de">Nomen · Verb · Adjektiv</p>
+        <h1 id="reviewTitle" tabindex="-1" data-i18n="reviewTitle">Let's give these words another go.</h1>
+        <p class="intro" data-i18n="reviewBody"></p>
+        <button id="continue" class="primary" type="button" data-i18n="continue">Continue</button>
+      </section>
+      <section id="summary" class="panel" hidden>
+        <p class="eyebrow" data-i18n="summaryTitle">Practice complete</p>
+        <h1 id="summaryMessage" tabindex="-1"></h1>
+        <dl class="metrics"><div><dt data-i18n="firstTry">First-try accuracy</dt><dd id="accuracy"></dd></div><div><dt data-i18n="totalTime">Total time</dt><dd id="totalTime"></dd></div><div><dt data-i18n="corrections">Words corrected</dt><dd id="corrections"></dd></div></dl>
+        <button id="again" class="primary" type="button" data-i18n="again">Practice again</button>
+      </section>
+      <noscript>Please enable JavaScript to practice. Bitte aktiviere JavaScript.</noscript>
+    </main>
+    <footer><p data-i18n="source"></p><a href="https://www.wikidata.org/wiki/Wikidata:Lexicographical_data" target="_blank" rel="noopener noreferrer">Wikidata</a><span id="version"></span></footer>
+  </div>
+  <script type="module" src="app.js?v=2.1.0"></script>
+</body>
+</html>

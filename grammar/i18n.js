@@ -1,0 +1,68 @@
+// German vocabulary and category names stay German; instructions follow the interface language.
+export const translations = {
+  en: {
+    title: "German word practice", subtitle: "Little words. Big discoveries.", backMath: "Back to math", language: "Language",
+    heading: "What kind of word is it?", intro: "Meet a German word, then choose its word class. Press 1, 2 or 3 — or tap a button.",
+    nounHint: "Names people, animals, things or ideas. German nouns start with a capital letter.",
+    verbHint: "Says what someone does or what happens. Here you will see the basic form, like spielen.",
+    adjectiveHint: "Describes what something is like, for example klein or weich.",
+    length: "Words per session", start: "Let's practice", loading: "Loading word classes from Wikidata…", ready: "{count} words ready to explore.",
+    error: "We couldn't load the dictionary. Check your internet connection and try again. No session has started.", retry: "Try loading again",
+    keyboard: "Press 1, 2 or 3. No Enter needed.", prompt: "Choose the word class", end: "End session", leave: "End this practice? This session's results will be lost.",
+    round: "Round {round} · Word {current} of {total}", firstTry: "First-try accuracy", correct: "Correct!", wrong: "Not quite — {word} is {category}.",
+    reviewTitle: "Let's give these words another go.", reviewBody: "Look at the clues and practice the words that felt tricky. Every try helps you learn.", continue: "Continue",
+    summaryTitle: "Practice complete", perfect: "Every word right on the first try. Well done!", good: "Nearly every word right first time — and you worked through the tricky ones.", encouragement: "You kept going and practiced the tricky words. That's how learning happens.",
+    totalTime: "Total time", corrections: "Words corrected", again: "Practice again", source: "Word classes: Wikidata (CC0). An internet connection is required to load words.",
+    sourceWord: "Dictionary entry", version: "Version", skip: "Skip to practice", progress: "Progress in this round", noScript: "Please enable JavaScript to practice.",
+  },
+  de: {
+    title: "Deutsche Wortarten üben", subtitle: "Kleine Wörter. Große Entdeckungen.", backMath: "Zurück zu Mathe", language: "Sprache",
+    heading: "Welche Wortart ist das?", intro: "Schau dir das Wort an und wähle die Wortart. Drücke 1, 2 oder 3 — oder tippe auf eine Taste.",
+    nounHint: "Benennt Menschen, Tiere, Dinge oder Gedanken. Nomen schreibt man groß.",
+    verbHint: "Sagt, was jemand tut oder was passiert. Hier siehst du die Grundform, zum Beispiel spielen.",
+    adjectiveHint: "Beschreibt, wie etwas ist, zum Beispiel klein oder weich.",
+    length: "Wörter pro Runde", start: "Los geht's", loading: "Wortarten werden von Wikidata geladen…", ready: "{count} Wörter warten auf dich.",
+    error: "Das Wörterbuch konnte nicht geladen werden. Prüfe die Internetverbindung und versuche es noch einmal. Die Übung hat noch nicht begonnen.", retry: "Erneut laden",
+    keyboard: "Drücke 1, 2 oder 3. Du brauchst keine Eingabetaste.", prompt: "Wähle die Wortart", end: "Übung beenden", leave: "Übung beenden? Die Ergebnisse dieser Übung gehen verloren.",
+    round: "Runde {round} · Wort {current} von {total}", firstTry: "Beim ersten Versuch richtig", correct: "Richtig!", wrong: "Noch nicht ganz — {word} ist ein {category}.",
+    reviewTitle: "Diese Wörter schauen wir uns noch einmal an.", reviewBody: "Achte auf die Hinweise und übe die kniffligen Wörter. Mit jedem Versuch lernst du dazu.", continue: "Weiter",
+    summaryTitle: "Übung geschafft", perfect: "Alle Wörter gleich richtig erkannt. Toll gemacht!", good: "Fast alle Wörter gleich erkannt — und die kniffligen hast du auch geschafft.", encouragement: "Du bist drangeblieben und hast die kniffligen Wörter geübt. So lernst du Schritt für Schritt dazu.",
+    totalTime: "Gesamtzeit", corrections: "Wörter verbessert", again: "Noch einmal üben", source: "Wortarten: Wikidata (CC0). Zum Laden der Wörter brauchst du eine Internetverbindung.",
+    sourceWord: "Wörterbucheintrag", version: "Version", skip: "Zur Übung springen", progress: "Fortschritt in dieser Runde", noScript: "Bitte aktiviere JavaScript, um zu üben.",
+  },
+  lt: {
+    title: "Vokiečių kalbos žodžių rūšys", subtitle: "Maži žodžiai. Dideli atradimai.", backMath: "Grįžti prie matematikos", language: "Kalba",
+    heading: "Kokia tai kalbos dalis?", intro: "Pažvelk į vokišką žodį ir pasirink jo kalbos dalį. Spausk 1, 2 arba 3 — arba paliesk mygtuką.",
+    nounHint: "Įvardija žmones, gyvūnus, daiktus ar sąvokas. Vokiečių kalboje daiktavardžiai rašomi didžiąja raide.",
+    verbHint: "Nusako, ką kas nors daro arba kas vyksta. Čia pateikiama bendratis, pavyzdžiui, spielen.",
+    adjectiveHint: "Nusako, koks kas nors yra, pavyzdžiui, klein arba weich.",
+    length: "Žodžių skaičius", start: "Pradėti mokytis", loading: "Žodžių kalbos dalys įkeliamos iš Wikidata…", ready: "Paruoštų žodžių: {count}.",
+    error: "Nepavyko įkelti žodyno. Patikrink interneto ryšį ir bandyk dar kartą. Užduotis dar nepradėta.", retry: "Įkelti dar kartą",
+    keyboard: "Spausk 1, 2 arba 3. Enter spausti nereikia.", prompt: "Pasirink kalbos dalį", end: "Baigti užduotį", leave: "Baigti užduotį? Šios užduoties rezultatai bus prarasti.",
+    round: "{round} ratas · {current} žodis iš {total}", firstTry: "Teisingai iš pirmo karto", correct: "Teisingai!", wrong: "Dar ne — {word}: {category}.",
+    reviewTitle: "Pabandykime šiuos žodžius dar kartą.", reviewBody: "Atkreipk dėmesį į užuominas ir pakartok sunkesnius žodžius. Kiekvienas bandymas padeda išmokti.", continue: "Tęsti",
+    summaryTitle: "Užduotis baigta", perfect: "Visus žodžius atpažinai iš pirmo karto. Puikiai padirbėta!", good: "Beveik visus žodžius atpažinai iš karto, o sunkesnius sėkmingai pakartojai.", encouragement: "Nenuleidai rankų ir pakartojai sunkesnius žodžius. Taip žingsnis po žingsnio mokaisi.",
+    totalTime: "Bendras laikas", corrections: "Pataisyti žodžiai", again: "Mokytis dar kartą", source: "Kalbos dalys: Wikidata (CC0). Žodžiams įkelti reikia interneto ryšio.",
+    sourceWord: "Žodyno įrašas", version: "Versija", skip: "Pereiti prie užduoties", progress: "Šio rato pažanga", noScript: "Norint mokytis, reikia įjungti JavaScript.",
+  },
+  ru: {
+    title: "Части речи в немецком", subtitle: "Маленькие слова. Большие открытия.", backMath: "Вернуться к математике", language: "Язык",
+    heading: "Какая это часть речи?", intro: "Посмотри на немецкое слово и выбери его часть речи. Нажми 1, 2 или 3 на клавиатуре или коснись кнопки.",
+    nounHint: "Называет людей, животных, предметы или понятия. В немецком существительные пишутся с большой буквы.",
+    verbHint: "Говорит, что кто-то делает или что происходит. Здесь дана начальная форма, например spielen.",
+    adjectiveHint: "Описывает, какое что-то, например klein или weich.",
+    length: "Слов за занятие", start: "Начать занятие", loading: "Загружаем части речи из Wikidata…", ready: "Слов для практики: {count}.",
+    error: "Не удалось загрузить словарь. Проверь подключение к интернету и попробуй ещё раз. Занятие ещё не началось.", retry: "Загрузить снова",
+    keyboard: "Нажми 1, 2 или 3. Enter нажимать не нужно.", prompt: "Выбери часть речи", end: "Закончить занятие", leave: "Закончить занятие? Результаты этого занятия будут потеряны.",
+    round: "Раунд {round} · Слово {current} из {total}", firstTry: "Верно с первой попытки", correct: "Верно!", wrong: "Пока нет — {word}: {category}.",
+    reviewTitle: "Давай попробуем эти слова ещё раз.", reviewBody: "Обрати внимание на подсказки и повтори трудные слова. С каждой попыткой ты учишься.", continue: "Продолжить",
+    summaryTitle: "Занятие завершено", perfect: "Все слова верно с первой попытки. Отличная работа!", good: "Почти все слова верно с первого раза, а трудные слова удалось исправить.", encouragement: "Ты продолжал стараться и повторил трудные слова. Именно так мы учимся.",
+    totalTime: "Общее время", corrections: "Исправлено слов", again: "Ещё раз", source: "Части речи: Wikidata (CC0). Для загрузки слов нужно подключение к интернету.",
+    sourceWord: "Словарная статья", version: "Версия", skip: "Перейти к занятию", progress: "Прогресс в этом раунде", noScript: "Для занятий нужно включить JavaScript.",
+  },
+};
+
+export function translate(language, key, values = {}) {
+  return (translations[language]?.[key] ?? translations.en[key] ?? key)
+    .replace(/\{(\w+)\}/g, (_, name) => String(values[name] ?? `{${name}}`));
+}

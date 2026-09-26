@@ -1,15 +1,15 @@
 const CACHE_PREFIX = "math-sprint-v1-";
-const CACHE_NAME = `${CACHE_PREFIX}1.8.3`;
+const CACHE_NAME = `${CACHE_PREFIX}1.9.0`;
 const ASSETS = [
-  "./?v=1.8.3",
-  "./index.html?v=1.8.3",
-  "./styles.css?v=1.8.3",
-  "./app.js?v=1.8.3",
-  "./logic.js?v=1.8.3",
-  "./manifest.json?v=1.8.3",
-  "./favicon.svg?v=1.8.3",
-  "./favicon.ico?v=1.8.3",
-  "./apple-touch-icon.png?v=1.8.3"
+  "./?v=1.9.0",
+  "./index.html?v=1.9.0",
+  "./styles.css?v=1.9.0",
+  "./app.js?v=1.9.0",
+  "./logic.js?v=1.9.0",
+  "./manifest.json?v=1.9.0",
+  "./favicon.svg?v=1.9.0",
+  "./favicon.ico?v=1.9.0",
+  "./apple-touch-icon.png?v=1.9.0"
 ];
 
 self.addEventListener("install", (event) => {
@@ -32,7 +32,8 @@ self.addEventListener("activate", (event) => {
 
 self.addEventListener("fetch", (event) => {
   if (event.request.method !== "GET") return;
-  if (new URL(event.request.url).pathname.includes("/v2/")) return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || /\/(v2|grammar)\//.test(url.pathname)) return;
   event.respondWith(
     fetch(event.request)
       .then((response) => response)
