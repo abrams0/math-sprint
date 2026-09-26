@@ -1,7 +1,8 @@
-import { CATEGORIES, loadWords, buildDeck, createSession, answerSession } from "./logic.js?v=2.1.1";
-import { translations, translate } from "./i18n.js?v=2.1.1";
+import { CATEGORIES, loadWords, buildDeck, createSession, answerSession } from "./logic.js?v=2.2.0";
+import { translations, translate } from "./i18n.js?v=2.2.0";
+import { HISTORY_KEY, readHistory, recordResult, renderHistoryChart } from "./history.js?v=2.2.0";
 
-const APP_VERSION = "2.1.1";
+const APP_VERSION = "2.2.0";
 const $ = (id) => document.getElementById(id);
 const choices = [...document.querySelectorAll("[data-category]")];
 const hintKeys = { Nomen: "nounHint", Verb: "verbHint", Adjektiv: "adjectiveHint" };
@@ -19,6 +20,8 @@ let feedback = null;
 let questionPosition = null;
 let startedAt = 0;
 let elapsedMs = 0;
+let history = readHistory();
+let sessionHistoryId = null;
 const t = (key, values) => translate(language, key, values);
 
 if (new URLSearchParams(location.search).get("from") === "v2") $("backMath").href = "../v2/";
@@ -27,6 +30,7 @@ function show(view, focusId) {
   const changedView = phase !== view;
   phase = view;
   for (const id of ["setup", "practice", "review", "summary"]) $(id).hidden = id !== view;
+  if (view === "setup") renderHistory();
   if (changedView) window.scrollTo(0, 0);
   if (focusId) $(focusId).focus({ preventScroll: true });
 }
@@ -74,6 +78,33 @@ function renderSummary() {
   $("corrections").textContent = String(session.corrected);
 }
 
+function renderHistory() {
+  const entries = history.entries;
+  const percentage = (value) => new Intl.NumberFormat(language, { style: "percent", maximumFractionDigits: 0 }).format(value);
+  const date = (entry) => new Intl.DateTimeFormat(language, { dateStyle: "medium", timeStyle: "short" }).format(entry.completedAt);
+  $("historyCount").textContent = t("historyCount", { count: entries.length });
+  $("historyEmpty").hidden = entries.length > 0;
+  $("historyPlot").hidden = !entries.length;
+  $("historyDetails").hidden = !entries.length;
+  $("historyNote").textContent = t(history.saved ? "historyNote" : "historyUnsaved");
+  $("historyNote").classList.toggle("warning", !history.saved);
+  $("historySaveWarning").hidden = history.saved;
+  renderHistoryChart($("historyChart"), entries, {
+    title: t("historyTitle"), description: t("historyDescription", { count: entries.length }),
+    percentage, pointLabel: (entry) => `${date(entry)}: ${percentage(entry.firstCorrect / entry.total)}`,
+  });
+  $("historyRows").replaceChildren();
+  for (const entry of entries) {
+    const row = document.createElement("tr");
+    for (const text of [date(entry), percentage(entry.firstCorrect / entry.total)]) {
+      const cell = document.createElement("td");
+      cell.textContent = text;
+      row.append(cell);
+    }
+    $("historyRows").append(row);
+  }
+}
+
 function applyLanguage() {
   document.documentElement.lang = language;
   document.title = `${t("title")} · Math Sprint`;
@@ -84,11 +115,13 @@ function applyLanguage() {
   renderQuestionLabels();
   renderFeedback();
   renderSummary();
+  renderHistory();
 }
 
 function presentWord() {
   clearTimeout(timer);
   busy = false;
+  $("end").disabled = false;
   feedback = null;
   const item = session.pending[session.index];
   questionPosition = { round: session.round, current: session.index + 1, total: session.pending.length };
@@ -107,6 +140,7 @@ function start() {
   if (loading !== "ready") return;
   clearTimeout(timer);
   session = createSession(buildDeck(words, count));
+  sessionHistoryId = `${Date.now()}-${Math.random().toString(36).slice(2)}`;
   startedAt = performance.now();
   elapsedMs = 0;
   presentWord();
@@ -117,7 +151,15 @@ function submit(category) {
   busy = true;
   feedback = answerSession(session, category);
   const result = feedback;
-  if (result.outcome === "complete") elapsedMs = performance.now() - startedAt;
+  if (result.outcome === "complete") {
+    elapsedMs = performance.now() - startedAt;
+    // Save at the final answer, not after the feedback delay or during a render.
+    history = recordResult(history.entries, {
+      id: sessionHistoryId, completedAt: Date.now(), total: session.total, firstCorrect: session.firstCorrect,
+    });
+    $("end").disabled = true;
+    renderHistory();
+  }
   $("progress").value = questionPosition.current;
   $("feedback").dataset.result = result.correct ? "correct" : "wrong";
   for (const button of choices) {
@@ -173,5 +215,17 @@ $("end").addEventListener("click", () => {
   show("setup", "start");
 });
 $("again").addEventListener("click", () => show("setup", "start"));
+window.addEventListener("storage", (event) => {
+  if (event.key !== HISTORY_KEY && event.key !== null) return;
+  history = readHistory();
+  renderHistory();
+});
+if ("ResizeObserver" in window) {
+  new ResizeObserver(() => {
+    if (phase === "setup") renderHistory();
+  }).observe($("historyPlot"));
+} else {
+  window.addEventListener("resize", renderHistory);
+}
 applyLanguage();
 fetchDictionary();

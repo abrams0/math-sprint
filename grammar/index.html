@@ -5,15 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Wortarten · Math Sprint</title>
   <meta name="description" content="Practice German nouns, verbs and adjectives with quick keyboard or touch answers.">
-  <link rel="icon" href="favicon.svg?v=2.1.1" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.1.1">
-  <link rel="stylesheet" href="styles.css?v=2.1.1">
+  <link rel="icon" href="favicon.svg?v=2.2.0" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=2.2.0">
+  <link rel="stylesheet" href="styles.css?v=2.2.0">
 </head>
 <body>
   <a class="skip-link" href="#main" data-i18n="skip">Skip to practice</a>
   <div class="shell">
     <header class="header">
-      <a class="brand" href="../"><img src="favicon.svg?v=2.1.1" width="48" height="48" alt=""><span>Math Sprint<strong lang="de">Wortarten</strong></span></a>
+      <a class="brand" href="../"><img src="favicon.svg?v=2.2.0" width="48" height="48" alt=""><span>Math Sprint<strong lang="de">Wortarten</strong></span></a>
       <div class="header-tools">
         <a id="backMath" href="../" data-i18n="backMath">Back to math</a>
         <label><span class="sr-only" data-i18n="language">Language</span><select id="language"><option value="en">English</option><option value="lt">Lietuvių</option><option value="de">Deutsch</option><option value="ru">Русский</option></select></label>
@@ -24,6 +24,22 @@
         <p class="eyebrow" data-i18n="subtitle">Little words. Big discoveries.</p>
         <h1 data-i18n="heading">What kind of word is it?</h1>
         <p class="intro" data-i18n="intro">Meet a German word, then choose its word class. Press 1, 2 or 3 — or tap a button.</p>
+        <section id="historyCard" class="history-card" aria-labelledby="historyTitle">
+          <div class="history-heading">
+            <div><h2 id="historyTitle" data-i18n="historyTitle">Your progress</h2><p data-i18n="historySubtitle">Correct on the first try</p></div>
+            <span id="historyCount" class="history-count"></span>
+          </div>
+          <p id="historyEmpty" class="history-empty" data-i18n="historyEmpty"></p>
+          <div id="historyPlot" class="history-plot" hidden>
+            <svg id="historyChart" role="img" aria-labelledby="historySvgTitle historySvgDescription"></svg>
+            <div class="history-direction" aria-hidden="true"><span data-i18n="historyOldest">Oldest</span><span data-i18n="historyNewest">Newest</span></div>
+          </div>
+          <p id="historyNote" class="history-note" role="status"></p>
+          <details id="historyDetails" class="history-details" hidden>
+            <summary data-i18n="historyDetails">View results</summary>
+            <table><caption class="sr-only" data-i18n="historyTitle">Your progress</caption><thead><tr><th scope="col" data-i18n="historyDate">Completed</th><th scope="col" data-i18n="firstTry">First-try accuracy</th></tr></thead><tbody id="historyRows"></tbody></table>
+          </details>
+        </section>
         <div class="guide">
           <article><h2 lang="de"><kbd>1</kbd> Nomen</h2><p data-i18n="nounHint"></p><span lang="de">Hund · Buch · Sonne</span></article>
           <article><h2 lang="de"><kbd>2</kbd> Verb</h2><p data-i18n="verbHint"></p><span lang="de">spielen · lesen · lachen</span></article>
@@ -58,12 +74,13 @@
         <p class="eyebrow" data-i18n="summaryTitle">Practice complete</p>
         <h1 id="summaryMessage" tabindex="-1"></h1>
         <dl class="metrics"><div><dt data-i18n="firstTry">First-try accuracy</dt><dd id="accuracy"></dd></div><div><dt data-i18n="totalTime">Total time</dt><dd id="totalTime"></dd></div><div><dt data-i18n="corrections">Words corrected</dt><dd id="corrections"></dd></div></dl>
+        <p id="historySaveWarning" class="history-save-warning" data-i18n="historyUnsaved" role="status" hidden></p>
         <button id="again" class="primary" type="button" data-i18n="again">Practice again</button>
       </section>
       <noscript>Please enable JavaScript to practice. Bitte aktiviere JavaScript.</noscript>
     </main>
     <footer><p data-i18n="source"></p><a href="https://www.wikidata.org/wiki/Wikidata:Lexicographical_data" target="_blank" rel="noopener noreferrer">Wikidata</a><span id="version"></span></footer>
   </div>
-  <script type="module" src="app.js?v=2.1.1"></script>
+  <script type="module" src="app.js?v=2.2.0"></script>
 </body>
 </html>
